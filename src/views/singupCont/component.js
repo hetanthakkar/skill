@@ -68,6 +68,9 @@ export default class App extends React.Component {
       active1: false,
     });
   };
+  submit = () => {
+    this.props.navigation.navigate("Signup Detail");
+  };
   render() {
     return (
       <View
@@ -181,10 +184,7 @@ export default class App extends React.Component {
             }}
           />
         )}
-        <TouchableOpacity
-          style={styles.submit}
-          //   onPress={props.handleSubmit(submit)}
-        >
+        <TouchableOpacity style={styles.submit} onPress={this.submit}>
           <Text style={styles.submitText}>Continue Ahed {" >"} </Text>
         </TouchableOpacity>
       </View>

@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 30,
     fontWeight: "bold",
-    marginTop: screenHeight * 6,
+    marginTop: screenHeight * 2,
     marginLeft: screenWidth * 3,
     // alignSelf: "center",
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 85,
     borderStyle: "solid",
     backgroundColor: "#4630EB",
-    marginTop: screenHeight * 85,
+    marginTop: screenHeight * 78,
   },
   submitText: {
     color: "white",

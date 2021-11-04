@@ -86,9 +86,10 @@ const App = (props) => {
   const [scrollHeight, setScrollHeight] = React.useState(0);
 
   const submit = () => {
-    props.theme.theme == "light"
-      ? props.setTheme({ theme: "dark" })
-      : props.setTheme({ theme: "light" });
+    // props.theme.theme == "light"
+    //   ? props.setTheme({ theme: "dark" })
+    //   : props.setTheme({ theme: "light" });
+    props.navigation.navigate("Signup Cont");
   };
 
   const onContentSizeChange = (contentWidth, contentHeight) => {
@@ -98,7 +99,7 @@ const App = (props) => {
   return (
     <ScrollView
       onContentSizeChange={onContentSizeChange}
-      scrollEnabled={setScrollHeight > height}
+      scrollEnabled={scrollHeight > height}
       style={
         props.theme.theme == "dark"
           ? { ...styles.mainView, backgroundColor: "#141519" }
