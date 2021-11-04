@@ -2,16 +2,12 @@ import { StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../helpers/dimensions";
 
 const styles = StyleSheet.create({
-  titleView: {
-    marginStart: screenWidth * 3,
-    marginTop: screenHeight * 6,
-    marginRight: screenHeight * 0.1,
-  },
   category: {
     flexDirection: "row",
     marginTop: screenHeight * 3,
     justifyContent: "space-around",
     height: screenHeight * 20,
+    flexWrap: "wrap",
   },
   teacher: {
     padding: 10,
@@ -24,7 +20,7 @@ const styles = StyleSheet.create({
   teacherTitle: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: 23,
     padding: 6,
   },
   teacherDescription: { color: "white", fontSize: 18, padding: 4 },
@@ -40,7 +36,7 @@ const styles = StyleSheet.create({
   studentTitle: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: 23,
     padding: 6,
   },
 
@@ -86,12 +82,34 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 30,
     fontWeight: "bold",
+    marginTop: screenHeight * 6,
+    marginLeft: screenWidth * 3,
+    // alignSelf: "center",
   },
 
   subtitle: {
     marginTop: screenHeight * 1,
     fontSize: 18,
     color: "black",
+    marginLeft: screenWidth * 3,
+    // alignSelf: "center",
+  },
+  submit: {
+    position: "absolute",
+    alignSelf: "center",
+    borderRadius: 10,
+    width: screenWidth * 85,
+    borderStyle: "solid",
+    backgroundColor: "#4630EB",
+    marginTop: screenHeight * 85,
+  },
+  submitText: {
+    color: "white",
+    alignSelf: "center",
+    fontWeight: "500",
+    fontSize: 22,
+    letterSpacing: 1,
+    padding: 10,
   },
 });
 

@@ -2,12 +2,11 @@ import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { connect } from "react-redux";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { changeTheme, addInfo } from "../../actions";
 import { screenHeight } from "../../helpers/dimensions";
 import styles from "./styles";
 import { skills, coding, language, web, music } from "./mock";
-
+import Icon from "react-native-vector-icons/MaterialIcons";
 export default class App extends React.Component {
   state = {
     theme: "dark",
@@ -78,7 +77,7 @@ export default class App extends React.Component {
             : styles.mainView
         }
       >
-        <View style={styles.titleView}>
+        <View>
           <Text
             style={
               this.state.theme == "dark"
@@ -104,11 +103,17 @@ export default class App extends React.Component {
               onPress={this.selectTeacher}
               style={styles.teacher}
             >
-              <Text style={styles.teacherTitle}>Teacher{"  "}👨‍🏫</Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.teacherTitle}>Teacher</Text>
+                <Icon
+                  size={30}
+                  style={{ alignSelf: "center", marginLeft: 10 }}
+                  color="white"
+                  name="check-circle"
+                />
+              </View>
               <Text style={styles.teacherDescription}>
-                Share and monetize your skills to earn money.
-                {JSON.stringify(this.state.active)}
+                Share and monetize your skills to earn money.👨‍🏫
               </Text>
             </TouchableOpacity>
           </View>
@@ -117,10 +122,17 @@ export default class App extends React.Component {
               onPress={this.selectStudent}
               style={styles.student}
             >
-              <Text style={styles.studentTitle}>Student{"  "}👨🏻‍🎓</Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.studentTitle}>Student</Text>
+                <Icon
+                  size={22}
+                  style={{ alignSelf: "center" }}
+                  color="white"
+                  name={null}
+                />
+              </View>
               <Text style={styles.studentDescription}>
-                Get yourself ahed of croud by learning new skills
+                Get yourself ahed of croud by learning new skills.👨🏻‍🎓
               </Text>
             </TouchableOpacity>
           </View>
@@ -169,6 +181,12 @@ export default class App extends React.Component {
             }}
           />
         )}
+        <TouchableOpacity
+          style={styles.submit}
+          //   onPress={props.handleSubmit(submit)}
+        >
+          <Text style={styles.submitText}>Continue Ahed {" >"} </Text>
+        </TouchableOpacity>
       </View>
     );
   }
