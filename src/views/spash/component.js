@@ -1,10 +1,16 @@
 import React from "react";
-import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import styles from "./style";
 
 const CarItem = (props) => {
   return (
-    <View style={styles.carContainer}>
+    <ScrollView style={styles.carContainer}>
       <ImageBackground
         source={require("../../../assets/spash.jpeg")}
         style={styles.image}
@@ -58,7 +64,7 @@ const CarItem = (props) => {
           Signup
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 

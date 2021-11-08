@@ -1,23 +1,15 @@
 import React from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Dimensions,
-} from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import Anim from "../../../assets/animation";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
 import { changeTheme } from "../../actions";
 import styles from "./style";
 import { nameRegex, mailRegex } from "../../helpers/regex";
-import { screenWidth } from "../../helpers/dimensions";
+import { screenHeight, screenWidth } from "../../helpers/dimensions";
 import TextInput from "../../component/input";
+import { isSmallDevice, isLargeIosDevice } from "../../helpers/deviceInfo";
 
-const height = Dimensions.get("window").height;
-
-let email;
 const validate = (values) => {
   let errors = {};
 
@@ -48,7 +40,7 @@ const validate = (values) => {
 const myFields = ({
   label,
   theme,
-  meta: { error, touched, dirty, visited },
+  meta: { error, touched, dirty, visited, active },
   input: { onChange, ...restInput },
 }) => {
   const icon = () => {
@@ -63,32 +55,27 @@ const myFields = ({
     else return "white";
   };
   return (
-    <View style={styles.field}>
-      <TextInput
-        containerWidth={screenWidth * 95}
-        color={theme == "dark" ? "white" : "black"}
-        error={error != null && touched == true ? error : null}
-        secureTextEntry={label == "Password"}
-        onChangeText={onChange}
-        label={label}
-        labelColor={theme == "dark" ? "white" : "black"}
-        rightIcon={icon()}
-        rightIconColor={iconColor()}
-        rightIconSize={error != null && touched == true ? 23 : 20}
-        rightIconType="materialicon"
-        labelActiveColor={theme == "dark" ? "white" : "black"}
-        {...restInput}
-      />
-    </View>
+    <TextInput
+      containerWidth={screenWidth * 95}
+      color={theme == "dark" ? "white" : "black"}
+      error={error != null && touched == true ? error : null}
+      secureTextEntry={label == "Password"}
+      onChangeText={onChange}
+      label={label}
+      labelColor={theme == "dark" ? "white" : "black"}
+      rightIcon={icon()}
+      rightIconColor={iconColor()}
+      rightIconSize={error != null && touched == true ? 23 : 20}
+      rightIconType="materialicon"
+      labelActiveColor={theme == "dark" ? "white" : "black"}
+      {...restInput}
+    />
   );
 };
-const App = (props) => {
+let Form = (props) => {
   const [scrollHeight, setScrollHeight] = React.useState(0);
 
   const submit = () => {
-    // props.theme.theme == "light"
-    //   ? props.setTheme({ theme: "dark" })
-    //   : props.setTheme({ theme: "light" });
     props.navigation.navigate("Signup Cont");
   };
 
@@ -96,10 +83,65 @@ const App = (props) => {
     setScrollHeight(contentHeight);
   };
 
+  const getMarginTop = () => {
+    const values = [props.email, props.name, props.username, props.password];
+    const arr = values.map((value) => {
+      return value ? 1 : 0;
+    });
+    const add = (accumulator, a) => {
+      return accumulator + a;
+    };
+    const sum = arr.reduce(add, 0);
+
+    switch (sum) {
+      case 0: {
+        if (isLargeIosDevice) {
+          return screenHeight * 24;
+        } else if (isSmallDevice) {
+          return screenHeight * 10;
+        } else return screenHeight * 20;
+        break;
+      }
+
+      case 1: {
+        if (isLargeIosDevice) {
+          return screenHeight * 21;
+        } else if (isSmallDevice) {
+          return screenHeight * 8;
+        } else return screenHeight * 16;
+        break;
+      }
+
+      case 2: {
+        if (isLargeIosDevice) {
+          return screenHeight * 18;
+        } else if (isSmallDevice) {
+          return screenHeight * 6;
+        } else return screenHeight * 12;
+        break;
+      }
+
+      case 3: {
+        if (isLargeIosDevice) {
+          return screenHeight * 15;
+        } else if (isSmallDevice) {
+          return screenHeight * 4;
+        } else return screenHeight * 8;
+        break;
+      }
+      case 4: {
+        if (isLargeIosDevice) {
+          return screenHeight * 12;
+        } else if (isSmallDevice) {
+          return screenHeight * 2;
+        } else return screenHeight * 4;
+      }
+    }
+  };
   return (
     <ScrollView
       onContentSizeChange={onContentSizeChange}
-      scrollEnabled={scrollHeight > height}
+      scrollEnabled={scrollHeight > screenHeight * 100}
       style={
         props.theme.theme == "dark"
           ? { ...styles.mainView, backgroundColor: "#141519" }
@@ -107,12 +149,7 @@ const App = (props) => {
       }
     >
       <View style={styles.logoView}>
-        <Image
-          style={styles.logo}
-          source={{
-            uri: "https://raw.githubusercontent.com/react-ui-kit/dribbble2react/master/velocity/assets/images/icon.png",
-          }}
-        />
+        <Anim height={260} width={240} />
       </View>
 
       <Text
@@ -124,7 +161,6 @@ const App = (props) => {
       >
         Sign Up To Get Started
       </Text>
-
       <Field
         autoFocus={true}
         name="name"
@@ -153,9 +189,16 @@ const App = (props) => {
         label="Password"
         theme={props.theme.theme}
       />
-
       <TouchableOpacity
-        style={styles.createAccount}
+        style={{
+          alignSelf: "center",
+          borderRadius: 10,
+          width: "85%",
+          borderStyle: "solid",
+          backgroundColor: "#4630EB",
+
+          marginTop: getMarginTop(),
+        }}
         onPress={props.handleSubmit(submit)}
       >
         <Text style={styles.createAccountText}>Create Account</Text>
@@ -186,17 +229,24 @@ const mapDispatchToProps = (dispatch) => {
     setTheme: (value) => dispatch(changeTheme(value)),
   };
 };
-let ourform = reduxForm({
+Form = reduxForm({
   form: "signupform",
   destroyOnUnmount: false,
   validate,
-})(App);
+})(Form);
 
 const selector = formValueSelector("signupform");
-ourform = connect((state) => {
-  email = selector(state, "email");
+Form = connect((state) => {
+  const email = selector(state, "email");
+  const password = selector(state, "password");
+  const username = selector(state, "username");
+  const name = selector(state, "name");
+
   return {
     email,
+    password,
+    username,
+    name,
   };
-})(ourform);
-export default connect(mapStateToProps, mapDispatchToProps)(ourform);
+})(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

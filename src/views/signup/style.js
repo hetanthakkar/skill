@@ -6,20 +6,19 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: screenHeight * 4,
+    marginBottom: screenHeight * 2,
     marginTop: screenHeight * 2,
     color: "black",
   },
   logo: {
-    width: 80,
-    height: 100,
+    width: screenWidth * 10,
+    height: screenHeight * 10,
   },
   mainView: {
     flex: 1,
   },
   logoView: {
     alignSelf: "center",
-    marginTop: screenHeight * 1,
     flexDirection: "row",
   },
   customButton: {
@@ -56,11 +55,12 @@ const styles = StyleSheet.create({
   signinView: {
     alignSelf: "center",
     flexDirection: "row",
-    marginTop: screenHeight * 3,
+    // position: "absolute",
+    marginTop: screenHeight * 2,
   },
 
   field: {
-    marginBottom: screenHeight * 2.5,
+    marginTop: screenHeight * 2.5,
   },
 
   createAccount: {
@@ -69,7 +69,9 @@ const styles = StyleSheet.create({
     width: "85%",
     borderStyle: "solid",
     backgroundColor: "#4630EB",
-    marginTop: screenHeight * 2,
+    // position: "absolute",
+    // bottom: 5,
+    marginTop: screenHeight * 15,
   },
 
   createAccountText: {
