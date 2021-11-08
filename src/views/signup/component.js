@@ -1,14 +1,14 @@
 import React from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
-import Anim from "../../../assets/animation";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
-import { changeTheme } from "../../actions";
-import styles from "./style";
-import { nameRegex, mailRegex } from "../../helpers/regex";
-import { screenHeight, screenWidth } from "../../helpers/dimensions";
 import TextInput from "../../component/input";
-import { isSmallDevice, isLargeIosDevice } from "../../helpers/deviceInfo";
+import { changeTheme } from "../../actions";
+import Anim from "../../../assets/animation";
+import { nameRegex, mailRegex } from "../../helpers";
+import { screenHeight, screenWidth } from "../../helpers";
+import { isSmallDevice, isLargeIosDevice } from "../../helpers";
+import styles from "./style";
 
 const validate = (values) => {
   let errors = {};

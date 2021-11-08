@@ -24,7 +24,7 @@ const App = () => {
       <TouchableOpacity style={{ marginTop: screenHeight * 2 }}>
         <UserAvatar
           bgColor="#F0F0F0"
-          name="Nancy Bhadiyadra"
+          name="Hetan Thakkar"
           size={100}
           textColor="#F04E99"
           style={{ alignSelf: "center" }}
@@ -61,7 +61,7 @@ const App = () => {
           color: theme == "dark" ? "white" : "black",
         }}
       >
-        Nancy Bhadiyadra
+        Hetan Thakkar
       </Text>
 
       <View style={styles.modalView}>
@@ -109,6 +109,7 @@ const App = () => {
         </TouchableOpacity>
       </View>
       <TextInput
+        placeholderTextColor="#69707D"
         placeholder="Enter about yourself !!"
         onContentSizeChange={(event) => {
           setHeight(event.nativeEvent.contentSize.height);
@@ -121,7 +122,7 @@ const App = () => {
           width: "80%",
           alignSelf: "center",
           // marginLeft: '4%',
-          marginTop: screenHeight * 2,
+          marginTop: screenHeight * 1,
           borderRadius: 10,
           padding: 12,
           height: Math.max(screenHeight * 12, height),

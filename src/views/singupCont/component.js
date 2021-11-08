@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { connect } from "react-redux";
 import { changeTheme, addInfo } from "../../actions";
@@ -73,7 +73,7 @@ export default class App extends React.Component {
   };
   render() {
     return (
-      <View
+      <ScrollView
         style={
           this.state.theme == "dark"
             ? { ...styles.mainView, backgroundColor: "#141519" }
@@ -187,7 +187,7 @@ export default class App extends React.Component {
         <TouchableOpacity style={styles.submit} onPress={this.submit}>
           <Text style={styles.submitText}>Continue Ahed {" >"} </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     );
   }
 }
