@@ -5,6 +5,8 @@ import { reduxForm, Field, formValueSelector } from "redux-form";
 import TextInput from "../../component/input";
 import { changeTheme } from "../../actions";
 import Anim from "../../../assets/animation";
+import { SocialIcon } from "react-native-elements";
+
 import { nameRegex, mailRegex } from "../../helpers";
 import { screenHeight, screenWidth } from "../../helpers";
 import { isSmallDevice, isLargeIosDevice } from "../../helpers";
@@ -51,7 +53,7 @@ const myFields = ({
   };
   const iconColor = () => {
     if (error != null && touched == true) return "red";
-    if (error == undefined) return "green";
+    if (error == undefined && visited) return "green";
     else return "white";
   };
   return (
@@ -96,15 +98,15 @@ let Form = (props) => {
     switch (sum) {
       case 0: {
         if (isLargeIosDevice) {
-          return screenHeight * 24;
+          return screenHeight * 5;
         } else if (isSmallDevice) {
-          return screenHeight * 10;
-        } else return screenHeight * 20;
+          return screenHeight * 5;
+        } else return screenHeight * 5;
       }
 
       case 1: {
         if (isLargeIosDevice) {
-          return screenHeight * 21;
+          return screenHeight * 5;
         } else if (isSmallDevice) {
           return screenHeight * 8;
         } else return screenHeight * 16;
@@ -112,25 +114,18 @@ let Form = (props) => {
 
       case 2: {
         if (isLargeIosDevice) {
-          return screenHeight * 18;
+          return screenHeight * 5;
         } else if (isSmallDevice) {
-          return screenHeight * 6;
-        } else return screenHeight * 12;
+          return screenHeight * 5;
+        } else return screenHeight * 5;
       }
 
       case 3: {
         if (isLargeIosDevice) {
-          return screenHeight * 15;
+          return screenHeight * 3;
         } else if (isSmallDevice) {
           return screenHeight * 4;
-        } else return screenHeight * 8;
-      }
-      case 4: {
-        if (isLargeIosDevice) {
-          return screenHeight * 12;
-        } else if (isSmallDevice) {
-          return screenHeight * 2;
-        } else return screenHeight * 4;
+        } else return screenHeight * 3;
       }
     }
   };
@@ -157,17 +152,22 @@ let Form = (props) => {
       >
         Sign Up To Get Started
       </Text>
+      <View style={styles.signinView}>
+        <Text
+          style={
+            props.theme.theme == "dark"
+              ? { ...styles.already, color: "white" }
+              : styles.already
+          }
+        >
+          Already have an account?
+        </Text>
+        <Text style={styles.signinText}> Signin</Text>
+      </View>
       <Field
         name="name"
         component={myFields}
         label="Name"
-        theme={props.theme.theme}
-      />
-
-      <Field
-        name="username"
-        component={myFields}
-        label="Username "
         theme={props.theme.theme}
       />
 
@@ -184,31 +184,45 @@ let Form = (props) => {
         label="Password"
         theme={props.theme.theme}
       />
+
       <TouchableOpacity
         style={{
           alignSelf: "center",
-          borderRadius: 10,
+          borderRadius: 15,
           width: "85%",
           borderStyle: "solid",
           backgroundColor: "#4630EB",
           marginTop: getMarginTop(),
+          padding: 4,
         }}
         onPress={props.handleSubmit(submit)}
       >
         <Text style={styles.createAccountText}>Create Account</Text>
       </TouchableOpacity>
-      <View style={styles.signinView}>
-        <Text
-          style={
-            props.theme.theme == "dark"
-              ? { ...styles.already, color: "white" }
-              : styles.already
-          }
-        >
-          Already have an account?
-        </Text>
-        <Text style={styles.signinText}> Signin</Text>
-      </View>
+      <Text
+        style={{
+          color: "white",
+          alignSelf: "center",
+          marginTop: screenHeight * 3,
+          fontSize: 18,
+        }}
+      >
+        OR
+      </Text>
+      <TouchableOpacity
+        style={{
+          width: screenWidth * 85,
+          alignSelf: "center",
+          // borderRadius: 4,
+          marginTop: screenHeight * 1,
+        }}
+      >
+        <SocialIcon
+          title={"Sign In With Google"}
+          button={true}
+          type={"google"}
+        />
+      </TouchableOpacity>
     </ScrollView>
   );
 };

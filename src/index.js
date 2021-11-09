@@ -12,7 +12,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Splash Screen"
           component={Splash}
           options={{
@@ -46,7 +46,7 @@ function App() {
 
             headerStyle: { backgroundColor: "#141519" },
           }}
-        />  */}
+        />
         <Stack.Screen
           name="Home"
           component={Home}

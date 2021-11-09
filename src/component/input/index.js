@@ -217,6 +217,7 @@ export default class extends Component {
       maxHeight: containerMaxHeight ? containerMaxHeight : 150,
       marginBottom: containerMarginBottom ? containerMarginBottom : 0,
       marginLeft: width * 0.04,
+      marginTop: 12,
     };
     let iconStyle = {
       position: "absolute",

@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: screenHeight * 2,
     marginTop: screenHeight * 2,
     color: "black",
   },
@@ -18,6 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logoView: {
+    marginTop: screenHeight * 2,
     alignSelf: "center",
     flexDirection: "row",
   },
@@ -77,10 +77,10 @@ const styles = StyleSheet.create({
   createAccountText: {
     color: "white",
     alignSelf: "center",
-    fontWeight: "500",
     fontSize: 18,
-    letterSpacing: 1,
+    // letterSpacing: 1,
     padding: 10,
+    fontWeight: "bold",
   },
 });
 
