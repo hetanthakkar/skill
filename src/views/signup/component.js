@@ -100,7 +100,6 @@ let Form = (props) => {
         } else if (isSmallDevice) {
           return screenHeight * 10;
         } else return screenHeight * 20;
-        break;
       }
 
       case 1: {
@@ -109,7 +108,6 @@ let Form = (props) => {
         } else if (isSmallDevice) {
           return screenHeight * 8;
         } else return screenHeight * 16;
-        break;
       }
 
       case 2: {
@@ -118,7 +116,6 @@ let Form = (props) => {
         } else if (isSmallDevice) {
           return screenHeight * 6;
         } else return screenHeight * 12;
-        break;
       }
 
       case 3: {
@@ -127,7 +124,6 @@ let Form = (props) => {
         } else if (isSmallDevice) {
           return screenHeight * 4;
         } else return screenHeight * 8;
-        break;
       }
       case 4: {
         if (isLargeIosDevice) {
@@ -162,7 +158,6 @@ let Form = (props) => {
         Sign Up To Get Started
       </Text>
       <Field
-        autoFocus={true}
         name="name"
         component={myFields}
         label="Name"
@@ -196,7 +191,6 @@ let Form = (props) => {
           width: "85%",
           borderStyle: "solid",
           backgroundColor: "#4630EB",
-
           marginTop: getMarginTop(),
         }}
         onPress={props.handleSubmit(submit)}

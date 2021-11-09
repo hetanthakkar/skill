@@ -5,13 +5,14 @@ import Splash from "./views/spash";
 import Signup from "./views/signup";
 import SignupCont from "./views/singupCont";
 import SignupDetail from "./views/detailSignup";
+import Home from "./views/home";
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Splash Screen"
           component={Splash}
           options={{
@@ -44,6 +45,16 @@ function App() {
             headerTintColor: "white",
 
             headerStyle: { backgroundColor: "#141519" },
+          }}
+        />  */}
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShown: false,
+            // title: "Step 3/3",
+            // headerTintColor: "white",
+            // headerStyle: { backgroundColor: "#141519" },
           }}
         />
       </Stack.Navigator>
