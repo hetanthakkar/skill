@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   button1: {
     padding: 10,
     borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: "#F04E99",
   },
   submit: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 85,
     borderStyle: "solid",
     backgroundColor: "#4630EB",
-    marginTop: screenHeight * 7,
+    marginTop: screenHeight * 5,
   },
   textStyle1: {
     color: "black",

@@ -16,7 +16,7 @@ const CarItem = (props) => {
         style={styles.image}
       />
       <TouchableOpacity
-        onPress={() => props.navigation.navigate("Signup")}
+        onPress={() => props.navigation.navigate("Signup Detail")}
         style={{
           backgroundColor: "#171A20CC",
           padding: 12,
