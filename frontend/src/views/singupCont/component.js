@@ -1,13 +1,14 @@
 import React from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import { changeTheme, addInfo } from "../../actions";
-import { screenHeight } from "../../helpers/dimensions";
 import styles from "./styles";
 import { skills, coding, language, web, music } from "./mock";
 import Icon from "react-native-vector-icons/MaterialIcons";
-export default class App extends React.Component {
+
+class App extends React.Component {
   state = {
     theme: "dark",
     active: false,
@@ -68,8 +69,30 @@ export default class App extends React.Component {
       active1: false,
     });
   };
-  submit = () => {
+  submit = async () => {
+    let user = { ...this.props.user };
+    user.role = this.state.active ? "teacher" : "student";
+    user.skills = this.state.selectedItems;
+    user.specificSkils = this.state.newSelectItems;
+    await this.props.saveInfo(user);
     this.props.navigation.navigate("Signup Detail");
+  };
+
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem("token");
+    fetch("http://192.168.16.158:3000/getUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+      }),
+    })
+      .then((result) => result.json())
+      .then(async (data) => {
+        this.props.saveInfo(data);
+      });
   };
   render() {
     return (
@@ -108,12 +131,14 @@ export default class App extends React.Component {
             >
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.teacherTitle}>Teacher</Text>
-                <Icon
-                  size={30}
-                  style={{ alignSelf: "center", marginLeft: 10 }}
-                  color="white"
-                  name="check-circle"
-                />
+                {this.state.active && (
+                  <Icon
+                    size={30}
+                    style={{ alignSelf: "center", marginLeft: 10 }}
+                    color="white"
+                    name="check-circle"
+                  />
+                )}
               </View>
               <Text style={styles.teacherDescription}>
                 Share and monetize your skills to earn money.👨‍🏫
@@ -127,15 +152,18 @@ export default class App extends React.Component {
             >
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.studentTitle}>Student</Text>
-                <Icon
-                  size={22}
-                  style={{ alignSelf: "center" }}
-                  color="white"
-                  name={null}
-                />
+                {this.state.active1 && (
+                  <Icon
+                    size={22}
+                    style={{ alignSelf: "center" }}
+                    color="white"
+                    name="check-circle"
+                  />
+                )}
               </View>
               <Text style={styles.studentDescription}>
                 Get yourself ahed of croud by learning new skills.👨🏻‍🎓
+                {this.state.selectedItems}
               </Text>
             </TouchableOpacity>
           </View>
@@ -192,17 +220,17 @@ export default class App extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => {
-//   return {
-//     theme: state.themeReducer,
-//     details: state.signupReducer,
-//   };
-// };
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     setTheme: (value) => dispatch(changeTheme(value)),
-//     saveInfo: (value) => dispatch(addInfo(value)),
-//   };
-// };
+const mapStateToProps = (state) => {
+  return {
+    theme: state.themeReducer,
+    user: state.userReducer,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTheme: (value) => dispatch(changeTheme(value)),
+    saveInfo: (value) => dispatch(addInfo(value)),
+  };
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -2,17 +2,36 @@ import React, { useState } from "react";
 import { Text, TouchableOpacity, View, TextInput } from "react-native";
 import UserAvatar from "react-native-user-avatar";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import MateriCommunity from "react-native-vector-icons/MaterialCommunityIcons";
 import { screenHeight, screenWidth } from "../../helpers/dimensions";
 import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import MapView, { Marker } from "react-native-maps";
-
+import { connect } from "react-redux";
+import { changeTheme, addInfo } from "../../actions";
 import styles from "./styles";
-const App = () => {
-  const [height, setHeight] = useState(0);
+const App = (props) => {
+  const saveUser = async () => {
+    let user = { ...props.user };
+    user.location = coord;
+    await props.saveInfo(user);
+    await fetch("http://192.168.16.158:3000/modifyUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.password,
+        data: user,
+      }),
+    })
+      .then((result) => result.json())
+      .then(async (data) => {
+        console.log(data);
+        if (data == "success") props.navigation.navigate("Home");
+      });
+  };
+
   const [theme, setTheme] = useState("dark");
-  const [modalVisible, setModalVisible] = useState(false);
   const [city, setCity] = useState(null);
   const [state, setState] = useState(null);
   const [street, setStreet] = useState(null);
@@ -390,15 +409,33 @@ const App = () => {
         labelActiveColor={"black"}
       />
 
+      <TouchableOpacity style={styles.submit} onPress={saveUser}>
+        <Text style={styles.submitText}>Start Learning!</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.submit}
         onPress={() => {
-          Location.geocodeAsync("Rajkot").then((res) => console.log(res));
+          setDropDown(false);
+          setFinalLocation(false);
         }}
       >
-        <Text style={styles.submitText}>Start Learning!</Text>
+        <Text style={styles.submitText}>Reset!</Text>
       </TouchableOpacity>
     </View>
   );
 };
-export default App;
+
+const mapStateToProps = (state) => {
+  return {
+    theme: state.themeReducer,
+    user: state.userReducer,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTheme: (value) => dispatch(changeTheme(value)),
+    saveInfo: (value) => dispatch(addInfo(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

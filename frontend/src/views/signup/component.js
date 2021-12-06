@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
 import TextInput from "../../component/input";
 import { changeTheme } from "../../actions";
 import Anim from "../../../assets/animation";
 import { SocialIcon } from "react-native-elements";
-
+import * as Google from "expo-google-app-auth";
 import { nameRegex, mailRegex } from "../../helpers";
 import { screenHeight, screenWidth } from "../../helpers";
 import { isSmallDevice, isLargeIosDevice } from "../../helpers";
@@ -18,14 +19,8 @@ const validate = (values) => {
   if (!values.name) {
     errors.name = "This field is required!";
   }
-  if (!values.username) {
-    errors.username = "This field is required!";
-  }
   if (!values.password) {
     errors.password = "This field is required!";
-  }
-  if (!values.email) {
-    errors.cpassword = "This field is required!";
   }
   if (!mailRegex.test(values.email)) {
     errors.email = "Enter valid email address";
@@ -74,7 +69,38 @@ const myFields = ({
     />
   );
 };
+
 let Form = (props) => {
+  const signInWithGoogleAsync = async () => {
+    await Google.logInAsync({
+      androidClientId:
+        "943496437066-l8d6v20hh6ouj5d5pniet05q7pl4ceh9.apps.googleusercontent.com",
+      iosClientId:
+        "943496437066-sdrk3mek3l962grlk6i2d9jks7bkhl5h.apps.googleusercontent.com",
+      scopes: ["profile", "email"],
+    }).then((result) => {
+      fetch("http://192.168.16.158:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: result.user.email,
+          name: result.user.givenName + " " + result.user.familyName,
+          profilePhoto: result.user.photoUrl,
+          password: result.idToken,
+        }),
+      })
+        .then((result) => result.json())
+        .then(async (data) => {
+          if (data == "saved") {
+            await AsyncStorage.setItem("token", result.idToken);
+            props.navigation.navigate("Signup Cont");
+          }
+        })
+        .catch((err) => console.log("errror is", err));
+    });
+  };
   const [scrollHeight, setScrollHeight] = React.useState(0);
 
   const submit = () => {
@@ -86,7 +112,7 @@ let Form = (props) => {
   };
 
   const getMarginTop = () => {
-    const values = [props.email, props.name, props.username, props.password];
+    const values = [props.email, props.name, props.password];
     const arr = values.map((value) => {
       return value ? 1 : 0;
     });
@@ -150,7 +176,7 @@ let Form = (props) => {
             : styles.title
         }
       >
-        Sign Up To Get Started
+        Sign Up To Get Started{JSON.stringify(props.theme)}
       </Text>
       <View style={styles.signinView}>
         <Text
@@ -162,7 +188,9 @@ let Form = (props) => {
         >
           Already have an account?
         </Text>
-        <Text style={styles.signinText}> Signin</Text>
+        <Text style={styles.signinText} onPress={() => props.setTheme("light")}>
+          Signin
+        </Text>
       </View>
       <Field
         name="name"
@@ -210,6 +238,7 @@ let Form = (props) => {
         OR
       </Text>
       <TouchableOpacity
+        onPress={signInWithGoogleAsync}
         style={{
           width: screenWidth * 85,
           alignSelf: "center",
@@ -247,13 +276,11 @@ const selector = formValueSelector("signupform");
 Form = connect((state) => {
   const email = selector(state, "email");
   const password = selector(state, "password");
-  const username = selector(state, "username");
   const name = selector(state, "name");
 
   return {
     email,
     password,
-    username,
     name,
   };
 })(Form);

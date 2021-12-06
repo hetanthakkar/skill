@@ -12,13 +12,13 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Splash Screen"
           component={Splash}
           options={{
             headerShown: false,
           }}
-        />
+        /> */}
         <Stack.Screen
           name="Signup"
           component={Signup}
