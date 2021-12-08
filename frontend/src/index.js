@@ -25,7 +25,6 @@ function App(props) {
 
   const renderScreens = () => {
     if (user !== 0 && user !== -1) {
-      console.log("res");
       return (
         <NavigationContainer>
           <Stack.Navigator>
@@ -50,6 +49,7 @@ function App(props) {
               name="Login Screen"
               component={Login}
               options={{
+                headerShown: false,
                 headerTintColor: "white",
                 title: "Login Screen",
                 headerStyle: { backgroundColor: "#141519" },
@@ -101,7 +101,9 @@ function App(props) {
               name="Login Screen"
               component={Login}
               options={{
-                headerShown: false,
+                headerTintColor: "white",
+                title: "Login Screen",
+                headerStyle: { backgroundColor: "#141519" },
               }}
             />
             <Stack.Screen

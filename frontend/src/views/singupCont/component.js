@@ -80,7 +80,7 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem("token");
-    fetch("http://192.168.1.3:3000/getUser", {
+    fetch("http://192.168.2.6:3000/getUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

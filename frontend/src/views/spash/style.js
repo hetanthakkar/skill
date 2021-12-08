@@ -24,13 +24,6 @@ const styles = StyleSheet.create({
     marginLeft: "2%",
   },
 
-  image: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-    position: "absolute",
-  },
-
   buttonsContainer: {
     flex: 1,
     // position: "absolute",

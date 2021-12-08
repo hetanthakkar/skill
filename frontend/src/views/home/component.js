@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import Icon from "./icons";
 import * as Font from "expo-font";
@@ -40,7 +42,8 @@ class Home extends React.Component {
     await this.loadFonts();
     await this.setState({ fontsLoaded: true });
     const token = await AsyncStorage.getItem("token");
-    fetch("http://192.168.1.3:3000/getUser", {
+    // console.log("tokeeen is", token);
+    fetch("http://192.168.2.6:3000/getUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,8 +54,10 @@ class Home extends React.Component {
     })
       .then((result) => result.json())
       .then(async (data) => {
-        this.props.saveInfo(data);
-      });
+        console.log("data is fuck", data);
+        await this.props.saveInfo(data);
+      })
+      .catch((err) => console.log(err));
   };
   handleBackButton = () => {
     this.props.navigation.navigate("Signup");
@@ -61,11 +66,25 @@ class Home extends React.Component {
     if (this.state.fontsLoaded) {
       return (
         <SafeAreaView
-          style={{ flex: 1, backgroundColor: "#F1EEFc", flexDirection: "row" }}
+          key={this.props.user}
+          style={{
+            flex: 1,
+            backgroundColor: "white",
+            flexDirection: "row",
+            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+          }}
         >
-          <ScrollView>
+          <ScrollView
+            style={{
+              backgroundColor: this.props.theme == "dark" ? "#141519" : "white",
+            }}
+          >
             <LinearGradient
-              colors={["#09C6F9", "#045DE9"]}
+              colors={
+                this.props.theme == "dark"
+                  ? ["#141519", "#141519"]
+                  : ["white", "white"]
+              }
               style={styles.linerSty}
             >
               <TouchableOpacity
@@ -97,40 +116,73 @@ class Home extends React.Component {
                     style={{
                       padding: 10,
                       marginLeft: "4%",
-                      marginTop: screenHeight * 4,
+                      marginTop: screenHeight * 2,
                     }}
                   >
                     <Text
                       style={{
                         fontSize: 20,
-                        color: "#FFF",
-                        fontFamily: "Poppins-Light",
+                        color:
+                          this.props.theme == "light" ? "#141519" : "#F1EEFc",
+                        fontWeight: "bold",
                       }}
                     >
                       {this.props.user.name}
                     </Text>
                     <Text
-                      style={{ color: "#FFF", fontFamily: "Poppins-Light" }}
+                      style={{
+                        color:
+                          this.props.theme == "light" ? "#141519" : "#F1EEFc",
+                        fontFamily: "Poppins-bold",
+                        marginTop: screenHeight * 1,
+                        fontSize: 18,
+                      }}
                     >
                       {this.props.user.email}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: "Poppins-bold",
+                        color:
+                          this.props.theme == "light" ? "#141519" : "white",
+                        marginTop: screenHeight * 1,
+                        fontSize: 16,
+                      }}
+                    >
+                      Role: {this.props.user.role}
                     </Text>
                   </View>
                 </View>
               </View>
             </LinearGradient>
-            <View style={[styles.transferbox, { marginTop: -75 }]}>
-              <View style={styles.balance}>
-                <Text style={styles.curSty}>Current Balance</Text>
-                <Text style={styles.balSty}>$ 1200</Text>
-              </View>
+            <View
+              style={[
+                styles.transferbox,
+                {
+                  backgroundColor:
+                    this.props.theme == "dark" ? "#141519" : "white",
+                  marginTop: -75,
+                  borderColor:
+                    this.props.theme == "light" ? "#141519" : "white",
+                  borderWidth: 1,
+                },
+              ]}
+            >
               <View
                 style={{
                   flex: 1,
                   flexDirection: "row",
                   flexWrap: "wrap",
+                  padding: 8,
                 }}
               >
-                <View style={{ flex: 0.25, margin: 10, marginLeft: 20 }}>
+                <View
+                  style={{
+                    flex: 0.25,
+                    margin: 10,
+                    marginLeft: 20,
+                  }}
+                >
                   <TouchableOpacity
                     onPress={() => this.props.navigation.navigate("Linear1")}
                   >
@@ -151,7 +203,18 @@ class Home extends React.Component {
                         </View>
                       </View>
                     </LinearGradient>
-                    <Text style={styles.paytypesty}>Teach</Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        paddingTop: 10,
+                        fontSize: 14,
+                        fontFamily: "Poppins-Medium",
+                        color:
+                          this.props.theme == "light" ? "#141519" : "white",
+                      }}
+                    >
+                      Teach
+                    </Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ flex: 0.25, margin: 10, marginLeft: 20 }}>
@@ -175,7 +238,18 @@ class Home extends React.Component {
                         </View>
                       </View>
                     </LinearGradient>
-                    <Text style={styles.paytypesty}>Learn</Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        paddingTop: 10,
+                        fontSize: 14,
+                        fontFamily: "Poppins-Medium",
+                        color:
+                          this.props.theme == "light" ? "#141519" : "white",
+                      }}
+                    >
+                      Learn
+                    </Text>
                   </TouchableOpacity>
                 </View>
 
@@ -199,7 +273,20 @@ class Home extends React.Component {
                         </View>
                       </View>
                     </LinearGradient>
-                    <Text style={styles.paytypesty}>Transaction</Text>
+                    <Text
+                      style={{
+                        flexWrap: "wrap",
+                        textAlign: "center",
+                        alignSelf: "center",
+                        paddingTop: 10,
+                        fontSize: 14,
+                        fontFamily: "Poppins-Medium",
+                        color:
+                          this.props.theme == "light" ? "#141519" : "white",
+                      }}
+                    >
+                      Transactions
+                    </Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ flex: 0.25, margin: 10 }}>
@@ -219,7 +306,20 @@ class Home extends React.Component {
                         </View>
                       </View>
                     </LinearGradient>
-                    <Text style={styles.paytypesty}>Around Me</Text>
+                    <Text
+                      style={{
+                        flexWrap: "wrap",
+                        textAlign: "center",
+                        alignSelf: "center",
+                        paddingTop: 10,
+                        fontSize: 12,
+                        fontFamily: "Poppins-Medium",
+                        color:
+                          this.props.theme == "light" ? "#141519" : "white",
+                      }}
+                    >
+                      Around Me
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -227,10 +327,11 @@ class Home extends React.Component {
             <View
               style={{
                 flex: 1,
-                marginVertical: 15,
+                justifyContent: "center",
+                marginTop: 15,
                 flexWrap: "wrap",
-                // justifyContent: "space-evenly",
-                // alignSelf: "center",
+                backgroundColor:
+                  this.props.theme == "dark" ? "#141519" : "white",
               }}
             >
               <View style={styles.shoppingCotainer}>
@@ -243,7 +344,15 @@ class Home extends React.Component {
                       color="#045DE9"
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Coding</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Coding
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
                   <View style={styles.shoppingtxt1}>
@@ -254,7 +363,15 @@ class Home extends React.Component {
                       color="#045DE9"
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Digital Marketing</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Digital Marketing
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.shoppingCotainer}>
@@ -267,7 +384,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Musical Instrument</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Musical Instrument
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
                   <View style={styles.shoppingtxt1}>
@@ -278,7 +403,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Singing</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Singing
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.shoppingCotainer}>
@@ -291,7 +424,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Designing</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Designing
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
                   <View style={styles.shoppingtxt1}>
@@ -302,7 +443,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Photography</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Photography
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.shoppingCotainer}>
@@ -315,7 +464,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Academics</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Academics
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
                   <View style={styles.shoppingtxt1}>
@@ -326,7 +483,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Language</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Language
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.shoppingCotainer}>
@@ -339,7 +504,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Painting</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Painting
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
                   <View style={styles.shoppingtxt1}>
@@ -350,7 +523,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Cooking</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Cooking
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.shoppingCotainer}>
@@ -363,7 +544,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Designing</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Designing
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
                   <View style={styles.shoppingtxt1}>
@@ -374,7 +563,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Photography</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Photography
+                  </Text>
                 </TouchableOpacity>
               </View>
 
@@ -388,7 +585,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Buisness</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Buisness
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.shoppingbody}>
@@ -400,7 +605,15 @@ class Home extends React.Component {
                       color={mainColor}
                     />
                   </View>
-                  <Text style={styles.shoptxt}>Other</Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 13,
+                      color: this.props.theme == "light" ? "#141519" : "white",
+                    }}
+                  >
+                    Other
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -415,7 +628,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    theme: state.themeReducer,
+    theme: state.themeReducer.theme,
     user: state.userReducer,
   };
 };

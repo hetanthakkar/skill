@@ -38,7 +38,7 @@ const validate = (values) => {
 const myFields = ({
   label,
   theme,
-  meta: { error, touched, dirty, visited, active },
+  meta: { error, touched, dirty, visited },
   input: { onChange, ...restInput },
 }) => {
   const icon = () => {
@@ -76,6 +76,7 @@ let Form = (props) => {
   const [error, setError] = useState(false);
 
   const signInWithGoogleAsync = async () => {
+    console.log("hey there");
     await Google.logInAsync({
       androidClientId:
         "943496437066-l8d6v20hh6ouj5d5pniet05q7pl4ceh9.apps.googleusercontent.com",
@@ -83,7 +84,8 @@ let Form = (props) => {
         "943496437066-sdrk3mek3l962grlk6i2d9jks7bkhl5h.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     }).then((result) => {
-      fetch("http://192.168.1.3:3000/login", {
+      console.log("rejult is", result);
+      fetch("http://192.168.2.6:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,16 +97,18 @@ let Form = (props) => {
         .then((result) => result.json())
         .then(async (data) => {
           if (data) {
+            console.log("fucking data is", data);
             await props.addUser(data);
             await AsyncStorage.setItem("token", data.password);
             props.navigation.navigate("Home");
           }
         })
-        .catch(() =>
+        .catch((err) => {
+          console.log(err);
           setError(
             "You do not have a Skillify account connected to your Google Account."
-          )
-        );
+          );
+        });
     });
   };
   const [scrollHeight, setScrollHeight] = React.useState(0);
@@ -237,11 +241,10 @@ let Form = (props) => {
         style={{
           alignSelf: "center",
           borderRadius: 15,
-          width: "85%",
+          width: screenWidth * 85,
           borderStyle: "solid",
           backgroundColor: "#045DE9",
           marginTop: getMarginTop(),
-          padding: 4,
         }}
         onPress={props.handleSubmit(submit)}
       >
@@ -251,9 +254,10 @@ let Form = (props) => {
       <TouchableOpacity
         onPress={signInWithGoogleAsync}
         style={{
+          alignSelf: "center",
           width: screenWidth * 85,
           alignSelf: "center",
-          // borderRadius: 4,
+          borderRadius: 15,
           marginTop: screenHeight * 3,
         }}
       >
@@ -261,7 +265,6 @@ let Form = (props) => {
           title={"CONTINUE WITH GOOGLE"}
           button={true}
           type={"google"}
-          style={{ borderRadius: 15 }}
         />
       </TouchableOpacity>
     </ScrollView>

@@ -6,66 +6,88 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import styles from "./style";
+import {
+  useFonts,
+  PermanentMarker_400Regular,
+} from "@expo-google-fonts/permanent-marker";
+
+import { screenHeight } from "../../helpers";
 
 const CarItem = (props) => {
-  return (
-    <ScrollView style={styles.carContainer}>
+  let [fontLoaded] = useFonts({
+    PermanentMarker_400Regular,
+  });
+
+  if (fontLoaded) {
+    return (
       <ImageBackground
-        source={require("../../../assets/spash.jpeg")}
-        style={styles.image}
-      />
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate("Login Screen")}
-        style={{
-          backgroundColor: "#171A20CC",
-          padding: 12,
-          // height: 40,
-          borderRadius: 20,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "180%",
-          width: "75%",
-          alignSelf: "center",
-        }}
+        style={{ flex: 1 }}
+        source={require("../../../assets/splash.png")}
       >
         <Text
           style={{
-            color: "#FFFFFF",
-            fontSize: 12,
-            fontWeight: "500",
-            textTransform: "uppercase",
+            marginTop: screenHeight * 40,
+            textAlign: "center",
+            fontSize: 45,
+            fontFamily: "PermanentMarker_400Regular",
           }}
         >
-          Login
+          Skillify
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate("Signup")}
-        style={{
-          backgroundColor: "#171A20CC",
-          height: 40,
-          borderRadius: 20,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "5%",
-          width: "75%",
-          alignSelf: "center",
-        }}
-      >
-        <Text
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("Login Screen")}
           style={{
-            color: "white",
-            fontSize: 12,
-            fontWeight: "500",
-            textTransform: "uppercase",
+            backgroundColor: "#171A20CC",
+            padding: 12,
+            // height: 40,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "75%",
+            width: "70%",
+            alignSelf: "center",
           }}
         >
-          Signup
-        </Text>
-      </TouchableOpacity>
-    </ScrollView>
-  );
+          <Text
+            style={{
+              color: "#FFFFFF",
+              fontSize: 12,
+              fontWeight: "500",
+              textTransform: "uppercase",
+            }}
+          >
+            Login
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("Signup")}
+          style={{
+            backgroundColor: "#171A20CC",
+            height: 40,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "7%",
+            width: "70%",
+            alignSelf: "center",
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontSize: 12,
+              fontWeight: "500",
+              textTransform: "uppercase",
+            }}
+          >
+            Signup
+          </Text>
+        </TouchableOpacity>
+      </ImageBackground>
+    );
+  } else {
+    return <View></View>;
+  }
 };
 
 export default CarItem;

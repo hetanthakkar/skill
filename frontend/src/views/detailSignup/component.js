@@ -16,7 +16,7 @@ const App = (props) => {
     let user = { ...props.user };
     user.location = coord;
     await props.saveInfo(user);
-    await fetch("http://192.168.1.3:3000/modifyUser", {
+    await fetch("http://192.168.2.6:3000/modifyUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

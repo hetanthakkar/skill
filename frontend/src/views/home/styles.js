@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   },
   linerSty: {
     height: 200,
-    marginTop: screenHeight * 3,
   },
   imgSty: {
     width: 70,

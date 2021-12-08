@@ -79,7 +79,7 @@ let Form = (props) => {
         "943496437066-sdrk3mek3l962grlk6i2d9jks7bkhl5h.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     }).then((result) => {
-      fetch("http://192.168.1.3:3000/signup", {
+      fetch("http://192.168.2.6:3000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,10 +132,10 @@ let Form = (props) => {
 
       case 1: {
         if (isLargeIosDevice) {
-          return screenHeight * 5;
+          return screenHeight * 3;
         } else if (isSmallDevice) {
-          return screenHeight * 8;
-        } else return screenHeight * 16;
+          return screenHeight * 5;
+        } else return screenHeight * 8;
       }
 
       case 2: {
@@ -227,29 +227,21 @@ let Form = (props) => {
       >
         <Text style={styles.createAccountText}>Create Account</Text>
       </TouchableOpacity>
-      <Text
-        style={{
-          color: "white",
-          alignSelf: "center",
-          marginTop: screenHeight * 3,
-          fontSize: 18,
-        }}
-      >
-        OR
-      </Text>
+
       <TouchableOpacity
         onPress={signInWithGoogleAsync}
         style={{
           width: screenWidth * 85,
           alignSelf: "center",
           // borderRadius: 4,
-          marginTop: screenHeight * 1,
+          marginTop: screenHeight * 3,
         }}
       >
         <SocialIcon
           title={"Sign In With Google"}
           button={true}
           type={"google"}
+          style={{ borderRadius: 15 }}
         />
       </TouchableOpacity>
     </ScrollView>
