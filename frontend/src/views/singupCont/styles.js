@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: screenWidth * 85,
     borderStyle: "solid",
-    backgroundColor: "#4630EB",
+    backgroundColor: "#045DE9",
     marginTop: screenHeight * 78,
   },
   submitText: {

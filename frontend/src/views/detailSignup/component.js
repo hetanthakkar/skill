@@ -6,6 +6,8 @@ import { screenHeight, screenWidth } from "../../helpers/dimensions";
 import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import MapView, { Marker } from "react-native-maps";
+import { Overlay } from "react-native-elements";
+
 import { connect } from "react-redux";
 import { changeTheme, addInfo } from "../../actions";
 import styles from "./styles";
@@ -14,7 +16,7 @@ const App = (props) => {
     let user = { ...props.user };
     user.location = coord;
     await props.saveInfo(user);
-    await fetch("http://192.168.16.158:3000/modifyUser", {
+    await fetch("http://192.168.1.3:3000/modifyUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +28,6 @@ const App = (props) => {
     })
       .then((result) => result.json())
       .then(async (data) => {
-        console.log(data);
         if (data == "success") props.navigation.navigate("Home");
       });
   };
@@ -168,7 +169,6 @@ const App = (props) => {
         { label: "Jamshedpur", value: "Jamshedpur" },
       ]);
     if (callback(state) == "Kerala") {
-      console.log("kerala");
       setPickerCity([
         { label: "Thiruvananthapuram", value: "Thiruvananthapuram" },
         { label: "Kochi", value: "Kochi" },
@@ -244,42 +244,47 @@ const App = (props) => {
     }
     if (!dropDown && !finalLocation) {
       return (
-        <View style={styles.modalView}>
-          <Icon size={40} color="#4630EB" name="location-on" />
-          <Text style={styles.modalTextTitle}>
-            Device Location is not enabled
-          </Text>
-          <Text style={styles.modalTextSubtitle}>
-            Please enable device location.It help us serve better by using your
-            acurate address
-          </Text>
+        <Overlay
+          visible={true}
+          overlayStyle={{ borderRadius: 20, width: screenWidth * 90 }}
+        >
+          <View style={styles.modalView}>
+            <Icon size={40} color="#4630EB" name="location-on" />
+            <Text style={styles.modalTextTitle}>
+              Device Location is not enabled
+            </Text>
+            <Text style={styles.modalTextSubtitle}>
+              Please enable device location.It help us serve better by using
+              your acurate address
+            </Text>
 
-          <TouchableOpacity style={styles.button} onPress={location}>
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                size={15}
-                style={{ marginRight: 7 }}
-                color="grey"
-                name="my-location"
-              />
-              <Text style={styles.textStyle1}>Enable Device Location</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button1}
-            onPress={() => setDropDown(true)}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                size={15}
-                style={{ marginRight: 5 }}
-                color="grey"
-                name="search"
-              />
-              <Text style={styles.textStyle1}>Enter Location Manually</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={styles.button} onPress={location}>
+              <View style={{ flexDirection: "row" }}>
+                <Icon
+                  size={15}
+                  style={{ marginRight: 7 }}
+                  color="white"
+                  name="my-location"
+                />
+                <Text style={styles.textStyle1}>Enable Device Location</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button1}
+              onPress={() => setDropDown(true)}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Icon
+                  size={15}
+                  style={{ marginRight: 5 }}
+                  color="white"
+                  name="search"
+                />
+                <Text style={styles.textStyle1}>Enter Location Manually</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Overlay>
       );
     } else
       return (
@@ -318,10 +323,11 @@ const App = (props) => {
       <TouchableOpacity style={{ marginTop: screenHeight * 2 }}>
         <UserAvatar
           bgColor="#F0F0F0"
-          name="Hetan Thakkar"
+          name={props.user.name}
           size={100}
           textColor="#F04E99"
           style={{ alignSelf: "center" }}
+          src={props.user.profilePhoto}
         />
       </TouchableOpacity>
       <TouchableOpacity
@@ -355,7 +361,7 @@ const App = (props) => {
           color: theme == "dark" ? "white" : "black",
         }}
       >
-        Hetan Thakkar
+        {props.user.name}
       </Text>
       <View
         style={{
@@ -409,17 +415,31 @@ const App = (props) => {
         labelActiveColor={"black"}
       />
 
-      <TouchableOpacity style={styles.submit} onPress={saveUser}>
-        <Text style={styles.submitText}>Start Learning!</Text>
-      </TouchableOpacity>
+      {coord && (
+        <TouchableOpacity
+          style={styles.reset}
+          onPress={() => {
+            setDropDown(false);
+            setFinalLocation(false);
+            setCoord(null);
+          }}
+        >
+          <Text style={styles.resetText}>Reset Location</Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
-        style={styles.submit}
-        onPress={() => {
-          setDropDown(false);
-          setFinalLocation(false);
+        style={{
+          alignSelf: "center",
+          borderRadius: 10,
+          width: screenWidth * 85,
+          borderStyle: "solid",
+          backgroundColor: "#045DE9",
+          marginTop:
+            dropDown || finalLocation ? screenHeight * 10 : screenHeight * 20,
         }}
+        onPress={saveUser}
       >
-        <Text style={styles.submitText}>Reset!</Text>
+        <Text style={styles.submitText}>Start Learning!</Text>
       </TouchableOpacity>
     </View>
   );

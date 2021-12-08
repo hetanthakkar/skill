@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { CheckBox } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
 import TextInput from "../../component/input";
-import { changeTheme } from "../../actions";
+import { changeTheme, addInfo } from "../../actions";
 import Anim from "../../../assets/animation";
 import { SocialIcon } from "react-native-elements";
 import * as Google from "expo-google-app-auth";
@@ -71,6 +72,9 @@ const myFields = ({
 };
 
 let Form = (props) => {
+  const [remember, setRemember] = useState(true);
+  const [error, setError] = useState(false);
+
   const signInWithGoogleAsync = async () => {
     await Google.logInAsync({
       androidClientId:
@@ -79,26 +83,28 @@ let Form = (props) => {
         "943496437066-sdrk3mek3l962grlk6i2d9jks7bkhl5h.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     }).then((result) => {
-      fetch("http://192.168.1.3:3000/signup", {
+      fetch("http://192.168.1.3:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: result.user.email,
-          name: result.user.givenName + " " + result.user.familyName,
-          profilePhoto: result.user.photoUrl,
-          password: result.idToken,
         }),
       })
         .then((result) => result.json())
         .then(async (data) => {
-          if (data == "saved") {
-            await AsyncStorage.setItem("token", result.idToken);
-            props.navigation.navigate("Signup Cont");
+          if (data) {
+            await props.addUser(data);
+            await AsyncStorage.setItem("token", data.password);
+            props.navigation.navigate("Home");
           }
         })
-        .catch((err) => console.log("errror is", err));
+        .catch(() =>
+          setError(
+            "You do not have a Skillify account connected to your Google Account."
+          )
+        );
     });
   };
   const [scrollHeight, setScrollHeight] = React.useState(0);
@@ -112,7 +118,7 @@ let Form = (props) => {
   };
 
   const getMarginTop = () => {
-    const values = [props.email, props.name, props.password];
+    const values = [props.email, props.password];
     const arr = values.map((value) => {
       return value ? 1 : 0;
     });
@@ -124,10 +130,10 @@ let Form = (props) => {
     switch (sum) {
       case 0: {
         if (isLargeIosDevice) {
-          return screenHeight * 5;
+          return screenHeight * 3;
         } else if (isSmallDevice) {
-          return screenHeight * 5;
-        } else return screenHeight * 5;
+          return screenHeight * 3;
+        } else return screenHeight * 3;
       }
 
       case 1: {
@@ -140,18 +146,10 @@ let Form = (props) => {
 
       case 2: {
         if (isLargeIosDevice) {
-          return screenHeight * 5;
+          return screenHeight * 1;
         } else if (isSmallDevice) {
           return screenHeight * 5;
         } else return screenHeight * 5;
-      }
-
-      case 3: {
-        if (isLargeIosDevice) {
-          return screenHeight * 3;
-        } else if (isSmallDevice) {
-          return screenHeight * 4;
-        } else return screenHeight * 3;
       }
     }
   };
@@ -176,7 +174,7 @@ let Form = (props) => {
             : styles.title
         }
       >
-        Sign Up To Get Started
+        To continue, log in to Skillify.
       </Text>
       <View style={styles.signinView}>
         <Text
@@ -186,18 +184,12 @@ let Form = (props) => {
               : styles.already
           }
         >
-          Have an account?{" "}
+          Dont have an account?{" "}
         </Text>
         <Text style={styles.signinText} onPress={() => props.setTheme("light")}>
-          Log in.
+          Signup
         </Text>
       </View>
-      <Field
-        name="name"
-        component={myFields}
-        label="Name"
-        theme={props.theme.theme}
-      />
 
       <Field
         name="email"
@@ -212,7 +204,35 @@ let Form = (props) => {
         label="Password"
         theme={props.theme.theme}
       />
-
+      <Text
+        style={
+          props.theme.theme == "dark"
+            ? { ...styles.forgot, color: "#DFE5EF" }
+            : styles.forgot
+        }
+      >
+        Forgot your password?
+      </Text>
+      <View style={styles.checkboxContainer}>
+        <CheckBox
+          checkedColor={props.theme.theme == "dark" ? "#DFE5EF" : "black"}
+          uncheckedColor={props.theme.theme == "dark" ? "#DFE5EF" : "black"}
+          checked={remember}
+          onPress={() => (remember ? setRemember(false) : setRemember(true))}
+          style={styles.checkbox}
+        />
+        <Text
+          onPress={() => (remember ? setRemember(false) : setRemember(true))}
+          style={
+            props.theme.theme == "dark"
+              ? { ...styles.remember, color: "#DFE5EF" }
+              : styles.remember
+          }
+        >
+          Remember Me
+        </Text>
+      </View>
+      {error && <Text style={styles.error}>{error}</Text>}
       <TouchableOpacity
         style={{
           alignSelf: "center",
@@ -225,31 +245,23 @@ let Form = (props) => {
         }}
         onPress={props.handleSubmit(submit)}
       >
-        <Text style={styles.createAccountText}>Create Account</Text>
+        <Text style={styles.createAccountText}>LOG IN</Text>
       </TouchableOpacity>
-      <Text
-        style={{
-          color: "white",
-          alignSelf: "center",
-          marginTop: screenHeight * 3,
-          fontSize: 18,
-        }}
-      >
-        OR
-      </Text>
+
       <TouchableOpacity
         onPress={signInWithGoogleAsync}
         style={{
           width: screenWidth * 85,
           alignSelf: "center",
           // borderRadius: 4,
-          marginTop: screenHeight * 1,
+          marginTop: screenHeight * 3,
         }}
       >
         <SocialIcon
-          title={"Sign In With Google"}
+          title={"CONTINUE WITH GOOGLE"}
           button={true}
           type={"google"}
+          style={{ borderRadius: 15 }}
         />
       </TouchableOpacity>
     </ScrollView>
@@ -259,11 +271,13 @@ let Form = (props) => {
 const mapStateToProps = (state) => {
   return {
     theme: state.themeReducer,
+    user: state.userReducer,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     setTheme: (value) => dispatch(changeTheme(value)),
+    addUser: (value) => dispatch(addInfo(value)),
   };
 };
 Form = reduxForm({

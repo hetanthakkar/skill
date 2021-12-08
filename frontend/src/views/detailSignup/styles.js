@@ -5,19 +5,9 @@ const styles = StyleSheet.create({
   modalView: {
     alignSelf: "center",
     backgroundColor: "white",
-    borderRadius: 20,
     padding: 25,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
     width: "80%",
-    marginVertical: screenHeight * 4,
   },
   button: {
     padding: 10,
@@ -35,8 +25,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: screenWidth * 85,
     borderStyle: "solid",
-    backgroundColor: "#4630EB",
-    marginTop: screenHeight * 5,
+    backgroundColor: "#045DE9",
+    marginTop: screenHeight * 20,
+  },
+  reset: {
+    alignSelf: "center",
+    borderRadius: 10,
+    width: screenWidth * 45,
+    backgroundColor: "#045DE9",
+    marginTop: screenHeight * 2,
   },
   textStyle1: {
     color: "black",
@@ -60,6 +57,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     letterSpacing: 1,
     padding: 10,
+  },
+  resetText: {
+    color: "white",
+    alignSelf: "center",
+    fontWeight: "500",
+    fontSize: 18,
+    padding: 9,
   },
 });
 

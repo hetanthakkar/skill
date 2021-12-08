@@ -40,16 +40,17 @@ const styles = StyleSheet.create({
   },
 
   already: {
-    fontSize: 15,
+    fontSize: 18,
     color: "black",
     fontWeight: "500",
-    // marginTop: screenHeight * 1,
+    marginTop: screenHeight * 0.2,
   },
 
   signinText: {
-    fontSize: 15,
-    color: "#006BB4",
+    fontSize: 20,
+    color: "#045DE9",
     fontWeight: "bold",
+    textDecorationLine: "underline",
   },
 
   signinView: {

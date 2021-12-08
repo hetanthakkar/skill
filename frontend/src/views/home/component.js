@@ -1,33 +1,31 @@
 import React, { Component } from "react";
+import { changeTheme, addInfo } from "../../actions";
 import {
   View,
   Text,
   BackHandler,
   ScrollView,
-  StyleSheet,
   Image,
   TouchableOpacity,
   Dimensions,
-  StatusBar,
+  SafeAreaView,
 } from "react-native";
 import Icon from "./icons";
 import * as Font from "expo-font";
 import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
+import styles from "./styles";
 const mainColor = "#045DE9";
-const bgcolor = "#F1EEFc";
 const { width } = Dimensions.get("window");
 var screenHeight = Math.round(Dimensions.get("window").height) / 100;
 var screenWidth = Math.round(Dimensions.get("window").width) / 100;
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      size: { width, height: 150 },
-      fontsLoaded: false,
-    };
-  }
 
+class Home extends React.Component {
+  state = {
+    size: { width, height: 150 },
+    fontsLoaded: false,
+  };
   loadFonts() {
     return Font.loadAsync({
       "Poppins-Light": require("../../../assets/fonts/Poppins-Light.ttf"),
@@ -36,45 +34,38 @@ export default class Home extends Component {
       "Poppins-Regular": require("../../../assets/fonts/Poppins-Regular.ttf"),
     });
   }
-  _renderBannerItems(rowData) {
-    return (
-      <TouchableOpacity
-        style={{ paddingHorizontal: 5 }}
-        onPress={() => this.props.navigation.navigate("Giftcard")}
-      >
-        <Image
-          source={rowData.item.img}
-          style={{ width: 350, height: 120, resizeMode: "stretch" }}
-        />
-      </TouchableOpacity>
-    );
-  }
-  async componentDidMount() {
+
+  componentDidMount = async () => {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     await this.loadFonts();
-    this.setState({ fontsLoaded: true });
-  }
+    await this.setState({ fontsLoaded: true });
+    const token = await AsyncStorage.getItem("token");
+    fetch("http://192.168.1.3:3000/getUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+      }),
+    })
+      .then((result) => result.json())
+      .then(async (data) => {
+        this.props.saveInfo(data);
+      });
+  };
   handleBackButton = () => {
     this.props.navigation.navigate("Signup");
   };
   render() {
     if (this.state.fontsLoaded) {
       return (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: bgcolor,
-            flexDirection: "row",
-            // marginTop: "20%",
-          }}
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: "#F1EEFc", flexDirection: "row" }}
         >
-          <StatusBar animated={true} backgroundColor="#045DE9" hidden={false} />
           <ScrollView>
             <LinearGradient
-              // colors={["#fc0f84", "#020cab"]}
               colors={["#09C6F9", "#045DE9"]}
-              start={{ x: 1, y: 0 }}
-              end={{ x: 0, y: 1 }}
               style={styles.linerSty}
             >
               <TouchableOpacity
@@ -98,7 +89,7 @@ export default class Home extends Component {
                   <View style={styles.userImg}>
                     <Image
                       style={styles.imgSty}
-                      source={require("../../../assets/dp.jpeg")}
+                      source={{ uri: this.props.user.profilePhoto }}
                     />
                   </View>
 
@@ -113,28 +104,17 @@ export default class Home extends Component {
                       style={{
                         fontSize: 20,
                         color: "#FFF",
-                        // fontFamily: "Poppins-Light",
+                        fontFamily: "Poppins-Light",
                       }}
                     >
-                      Hetan
+                      {this.props.user.name}
                     </Text>
-                    <Text style={{ color: "#FFF" }}>
-                      hetanthakkar1@gmail.com
+                    <Text
+                      style={{ color: "#FFF", fontFamily: "Poppins-Light" }}
+                    >
+                      {this.props.user.email}
                     </Text>
                   </View>
-                </View>
-                <View style={{ marginTop: 40 }}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Notifi")}
-                  >
-                    <Icon
-                      family="FontAwesome"
-                      name="bell-o"
-                      size={23}
-                      color="#FFF"
-                    />
-                    <Text style={styles.notifisty}>2</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </LinearGradient>
@@ -174,14 +154,13 @@ export default class Home extends Component {
                     <Text style={styles.paytypesty}>Teach</Text>
                   </TouchableOpacity>
                 </View>
-
-                <View style={{ flex: 0.25, margin: 10 }}>
+                <View style={{ flex: 0.25, margin: 10, marginLeft: 20 }}>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Settings")}
+                    onPress={() => this.props.navigation.navigate("Chat")}
                   >
                     <LinearGradient
-                      // colors={["#fc0f84", "#020cab"]}
                       colors={["#09C6F9", "#045DE9"]}
+                      // colors={["#fc0f84", "#020cab"]}
                       start={{ x: 1, y: 0 }}
                       end={{ x: 0, y: 1 }}
                       style={styles.gradsty}
@@ -199,11 +178,13 @@ export default class Home extends Component {
                     <Text style={styles.paytypesty}>Learn</Text>
                   </TouchableOpacity>
                 </View>
+
                 <View style={{ flex: 0.25, margin: 10 }}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate("Transaction")
-                    }
+                    onPress={async () => {
+                      await AsyncStorage.removeItem("token");
+                      this.props.navigation.navigate("Splash Screen");
+                    }}
                   >
                     <LinearGradient
                       colors={["#09C6F9", "#045DE9"]}
@@ -245,7 +226,7 @@ export default class Home extends Component {
             </View>
             <View
               style={{
-                // flex: 1,
+                flex: 1,
                 marginVertical: 15,
                 flexWrap: "wrap",
                 // justifyContent: "space-evenly",
@@ -424,150 +405,25 @@ export default class Home extends Component {
               </View>
             </View>
           </ScrollView>
-        </View>
+        </SafeAreaView>
       );
     } else {
       return <View></View>;
     }
   }
 }
-const styles = StyleSheet.create({
-  headerContainer: {
-    flex: 1,
-    marginTop: -screenHeight * 33,
-    // marginLeft: "3%",
-    // // marginVertical: 1,
-    marginLeft: screenWidth * 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    // paddingHorizontal: 10,
-  },
-  notifisty: {
-    borderRadius: 10,
-    backgroundColor: "#FFF",
-    fontSize: 8,
-    textAlign: "center",
-    width: 15,
-    padding: 2,
-    marginTop: -30,
-    marginLeft: 10,
-    margin: 5,
-  },
-  linerSty: {
-    flex: 0.1,
-    borderBottomRightRadius: 50,
-    borderBottomLeftRadius: 50,
-    height: 180,
-  },
-  imgSty: {
-    width: 70,
-    height: 70,
-    resizeMode: "contain",
-  },
-  userImg: {
-    width: 75,
-    height: 75,
-    borderRadius: 75 / 2,
-    borderColor: "#FFF",
-    borderWidth: 3,
-    marginLeft: screenWidth * -2.5,
-    marginTop: screenHeight * 4,
-    overflow: "hidden",
-  },
-  curSty: {
-    color: "gray",
-    // fontFamily: "Poppins-Medium",
-  },
-  balSty: {
-    color: "#fcad50",
-    // fontFamily: "Poppins-Bold",
-    fontSize: 17,
-  },
-  balance: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "lightgray",
-    paddingBottom: 10,
-    padding: 10,
-  },
-  transfer: {
-    padding: 10,
-    backgroundColor: "white",
-    borderRadius: 20,
-    alignItems: "center",
-  },
-  gradsty: {
-    borderRadius: 10,
-    paddingVertical: 5,
-  },
-  paytypesty: {
-    textAlign: "center",
-    paddingTop: 10,
-    fontSize: 10,
-    color: "#000",
-    // fontFamily: "Poppins-Medium",
-  },
-  transferbox: {
-    flex: 0.2,
-    backgroundColor: "white",
-    marginHorizontal: 10,
-    borderRadius: 10,
-    elevation: 2,
-    shadowColor: "lightgrey",
-    shadowOffset: { width: -0.5, height: 0.5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-  },
-  shoppingCotainer: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginVertical: 10,
-  },
-  shoppingbody: {
-    flex: 0.6,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  shoppingtxt: {
-    backgroundColor: "#FFF",
-    padding: 10,
-    alignItems: "center",
-    borderRadius: 50,
-  },
 
-  shoppingtxt1: {
-    backgroundColor: "#FFF",
-    padding: 10,
-    alignItems: "center",
-    borderRadius: 50,
-    marginRight: 15,
-    marginLeft: 10,
-  },
-  shoptxt: {
-    fontFamily: "Poppins-Regular",
-    // marginLeft: 2,
-    fontSize: 13,
-  },
-  notifiheader: {
-    flex: 0.2,
-    backgroundColor: "#fff",
-    margin: 10,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 5,
-    elevation: 10,
-    shadowColor: "lightgrey",
-    shadowOffset: { width: -0.5, height: 0.5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-  },
-  userimg: {
-    width: 40,
-    height: 40,
-    resizeMode: "contain",
-  },
-});
+const mapStateToProps = (state) => {
+  return {
+    theme: state.themeReducer,
+    user: state.userReducer,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTheme: (value) => dispatch(changeTheme(value)),
+    saveInfo: (value) => dispatch(addInfo(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
