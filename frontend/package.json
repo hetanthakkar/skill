@@ -15,7 +15,6 @@
     "@react-navigation/native-stack": "^6.2.5",
     "@react-navigation/stack": "^6.0.11",
     "expo": "~43.0.0",
-    "expo-dark-mode-switch": "^0.0.2",
     "expo-device": "~4.0.3",
     "expo-font": "~10.0.3",
     "expo-google-app-auth": "^9.0.0",

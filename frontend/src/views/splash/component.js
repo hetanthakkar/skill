@@ -97,7 +97,7 @@ const App = (props) => {
   });
   const changeTheme = (value) => {
     console.log("value");
-    if (value) props.setTheme("dark");
+    if (props.theme == "light") props.setTheme("dark");
     else props.setTheme("light");
   };
 
@@ -141,18 +141,23 @@ const App = (props) => {
           backgroundColor: props.theme == "dark" ? "#141519" : "white",
         }}
       >
-        <Switch
-          value={props.theme == "dark" ? true : false}
-          onChange={changeTheme}
+        <TouchableOpacity
+          onPress={changeTheme}
           style={{ marginTop: screenHeight * 10, marginLeft: screenWidth * 80 }}
-        />
+        >
+          <Icon
+            size={30}
+            style={{ alignSelf: "center", marginLeft: 10 }}
+            color={props.theme == "light" ? "black" : "white"}
+            name={props.theme == "light" ? "sunny-outline" : "moon-outline"}
+          />
+        </TouchableOpacity>
         <Image
           resizeMode="contain"
           style={{
             alignSelf: "center",
             width: "90%",
             height: "40%",
-            marginTop: screenHeight * 1,
           }}
           source={
             props.theme == "dark"
@@ -162,14 +167,14 @@ const App = (props) => {
         />
         <Text
           style={{
-            marginTop: screenHeight * 10,
+            marginTop: screenHeight * 3,
             textAlign: "center",
             fontSize: 45,
             fontFamily: "PermanentMarker_400Regular",
             color: props.theme == "dark" ? "white" : "black",
           }}
         >
-          Coding Buddies
+          Coding Buddies{props.theme}
         </Text>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("Login Screen")}
@@ -180,7 +185,7 @@ const App = (props) => {
             borderRadius: 20,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: screenHeight * 5,
+            marginTop: screenHeight * 7,
             width: "70%",
             alignSelf: "center",
           }}
@@ -205,7 +210,7 @@ const App = (props) => {
             borderRadius: 20,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: screenHeight * 5,
+            marginTop: screenHeight * 3,
             width: "70%",
             alignSelf: "center",
           }}

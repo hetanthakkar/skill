@@ -64,7 +64,7 @@ let Form = (props) => {
           source={
             props.theme.theme == "dark"
               ? require("../../../assets/nodatadark.jpeg")
-              : require("../../../assets/nodatadark.jpeg")
+              : require("../../../assets/nodata.png")
           }
         />
       </View>
