@@ -50,7 +50,12 @@ const myFields = ({
   const iconColor = () => {
     if (error != null && touched == true) return "red";
     if (error == undefined && visited) return "green";
-    else return "white";
+    else {
+      if (theme == "light") return "black";
+      else {
+        return "white";
+      }
+    }
   };
   return (
     <TextInput
@@ -85,7 +90,7 @@ let Form = (props) => {
       scopes: ["profile", "email"],
     }).then((result) => {
       console.log("rejult is", result);
-      fetch("http://192.168.2.6:3000/login", {
+      fetch("http://192.168.2.4:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,10 +102,9 @@ let Form = (props) => {
         .then((result) => result.json())
         .then(async (data) => {
           if (data) {
-            console.log("fucking data is", data);
             await props.addUser(data);
             await AsyncStorage.setItem("token", data.password);
-            props.navigation.navigate("Home");
+            props.navigation.navigate("HomeTab Screen");
           }
         })
         .catch((err) => {
@@ -255,7 +259,7 @@ let Form = (props) => {
         onPress={signInWithGoogleAsync}
         style={{
           alignSelf: "center",
-          width: screenWidth * 85,
+          width: screenWidth * 88,
           alignSelf: "center",
           borderRadius: 15,
           marginTop: screenHeight * 3,

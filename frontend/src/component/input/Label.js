@@ -92,6 +92,7 @@ export default class extends Component {
             fontFamily,
             fontSize,
             fontWeight: error ? null : "bold",
+            opacity: 0.8,
           }}
         >
           {label}

@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { screenHeight, screenWidth } from "../../helpers/dimensions";
 import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-maps";
 import { Overlay } from "react-native-elements";
 
 import { connect } from "react-redux";
@@ -16,7 +16,7 @@ const App = (props) => {
     let user = { ...props.user };
     user.location = coord;
     await props.saveInfo(user);
-    await fetch("http://192.168.2.6:3000/modifyUser", {
+    await fetch("http://192.168.2.4:3000/modifyUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +317,7 @@ const App = (props) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: theme == "dark" ? "#141519" : "white",
+        backgroundColor: props.theme == "dark" ? "#141519" : "white",
       }}
     >
       <TouchableOpacity style={{ marginTop: screenHeight * 2 }}>
@@ -358,7 +358,7 @@ const App = (props) => {
           fontWeight: "700",
           fontSize: 24,
           marginTop: screenHeight * 2,
-          color: theme == "dark" ? "white" : "black",
+          color: props.theme == "dark" ? "white" : "black",
         }}
       >
         {props.user.name}
@@ -373,7 +373,7 @@ const App = (props) => {
         {finalLocation && (
           <Text
             style={{
-              color: "white",
+              color: props.theme == "dark" ? "white" : "black",
               marginTop: screenHeight * 1,
               fontSize: 18,
               alignSelf: "center",
@@ -385,7 +385,7 @@ const App = (props) => {
         {finalLocation && (
           <Text
             style={{
-              color: "white",
+              color: props.theme == "dark" ? "white" : "black",
               marginTop: screenHeight * 1,
               fontSize: 18,
               alignSelf: "center",
@@ -397,7 +397,7 @@ const App = (props) => {
         {!finalLocation && !dropDown && (
           <Text
             style={{
-              color: "white",
+              color: props.theme == "dark" ? "white" : "black",
               marginTop: screenHeight * 1,
               fontSize: 18,
             }}
@@ -435,7 +435,7 @@ const App = (props) => {
           borderStyle: "solid",
           backgroundColor: "#045DE9",
           marginTop:
-            dropDown || finalLocation ? screenHeight * 10 : screenHeight * 20,
+            dropDown || finalLocation ? screenHeight * 5 : screenHeight * 20,
         }}
         onPress={saveUser}
       >

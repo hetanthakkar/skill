@@ -3,20 +3,19 @@ import { ActivityIndicator, LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Splash from "./views/splash";
-import Signup from "./views/signup";
-import SignupCont from "./views/singupCont";
-import SignupDetail from "./views/detailSignup";
-import Home from "./views/home";
-import Login from "./views/login";
-import HomeTab from "./views/home-tab";
-import ChatList from "./views/chatList";
+import Splash from "../splash";
+import Signup from "../signup";
+import SignupCont from "../singupCont";
+import SignupDetail from "../detailSignup";
+import Home from "../home";
+import Login from "../login";
+import HomeTab from "../home-tab";
+import { connect } from "react-redux";
 import { View } from "react-native";
 LogBox.ignoreAllLogs();
-
 const Stack = createNativeStackNavigator();
 
-function App(props) {
+const App = (props) => {
   const [user, setUser] = React.useState(0);
   React.useEffect(async () => {
     const token = await AsyncStorage.getItem("token");
@@ -49,18 +48,22 @@ function App(props) {
               component={Login}
               options={{
                 headerShown: false,
-                headerTintColor: "white",
+                headerTintColor: props.theme == "dark" ? "white" : "black",
                 title: "Login Screen",
-                headerStyle: { backgroundColor: "#141519" },
+                headerStyle: {
+                  backgroundColor: props.theme == "dark" ? "#141519" : "white",
+                },
               }}
             />
             <Stack.Screen
               name="Signup"
               component={Signup}
               options={{
-                title: "Step 1/3",
-                headerTintColor: "white",
-                headerStyle: { backgroundColor: "#141519" },
+                headerShown: false,
+                headerTintColor: props.theme == "dark" ? "white" : "black",
+                headerStyle: {
+                  backgroundColor: props.theme == "dark" ? "#141519" : "white",
+                },
               }}
             />
             <Stack.Screen
@@ -68,8 +71,10 @@ function App(props) {
               component={SignupCont}
               options={{
                 title: "Step 2/3",
-                headerTintColor: "white",
-                headerStyle: { backgroundColor: "#141519" },
+                headerTintColor: props.theme == "dark" ? "white" : "black",
+                headerStyle: {
+                  backgroundColor: props.theme == "dark" ? "#141519" : "white",
+                },
               }}
             />
             <Stack.Screen
@@ -77,8 +82,10 @@ function App(props) {
               component={SignupDetail}
               options={{
                 title: "Step 3/3",
-                headerTintColor: "white",
-                headerStyle: { backgroundColor: "#141519" },
+                headerTintColor: props.theme == "dark" ? "white" : "black",
+                headerStyle: {
+                  backgroundColor: props.theme == "dark" ? "#141519" : "white",
+                },
               }}
             />
             <Stack.Screen
@@ -108,9 +115,12 @@ function App(props) {
               name="Login Screen"
               component={Login}
               options={{
-                headerTintColor: "white",
                 title: "Login Screen",
-                headerStyle: { backgroundColor: "#141519" },
+                headerTintColor: props.theme == "dark" ? "#F2F2F2" : "black",
+                headerStyle: {
+                  backgroundColor:
+                    props.theme == "dark" ? "#141519" : "#F2F2F2",
+                },
               }}
             />
             <Stack.Screen
@@ -118,8 +128,11 @@ function App(props) {
               component={Signup}
               options={{
                 title: "Step 1/3",
-                headerTintColor: "white",
-                headerStyle: { backgroundColor: "#141519" },
+                headerTintColor: props.theme == "dark" ? "#F2F2F2" : "black",
+                headerStyle: {
+                  backgroundColor:
+                    props.theme == "dark" ? "#141519" : "#F2F2F2",
+                },
               }}
             />
             <Stack.Screen
@@ -127,8 +140,11 @@ function App(props) {
               component={SignupCont}
               options={{
                 title: "Step 2/3",
-                headerTintColor: "white",
-                headerStyle: { backgroundColor: "#141519" },
+                headerTintColor: props.theme == "dark" ? "#F2F2F2" : "black",
+                headerStyle: {
+                  backgroundColor:
+                    props.theme == "dark" ? "#141519" : "#F2F2F2",
+                },
               }}
             />
             <Stack.Screen
@@ -136,8 +152,11 @@ function App(props) {
               component={SignupDetail}
               options={{
                 title: "Step 3/3",
-                headerTintColor: "white",
-                headerStyle: { backgroundColor: "#141519" },
+                headerTintColor: props.theme == "dark" ? "#F2F2F2" : "black",
+                headerStyle: {
+                  backgroundColor:
+                    props.theme == "dark" ? "#141519" : "#F2F2F2",
+                },
               }}
             />
             <Stack.Screen
@@ -175,6 +194,19 @@ function App(props) {
       {renderScreens()}
     </View>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    theme: state.themeReducer.theme,
+    user: state.userReducer,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTheme: (value) => dispatch(changeTheme(value)),
+    saveInfo: (value) => dispatch(addInfo(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

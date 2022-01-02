@@ -4,28 +4,10 @@ const screenHeight = Math.round(Dimensions.get("window").height) / 100;
 const screenWidth = Math.round(Dimensions.get("window").width) / 100;
 const styles = StyleSheet.create({
   headerContainer: {
-    flex: 1,
-    marginTop: -screenHeight * 33,
-    // marginLeft: "3%",
-    // // marginVertical: 1,
+    flex: 0.2,
     marginLeft: screenWidth * 5,
     flexDirection: "row",
-    justifyContent: "space-between",
-    // paddingHorizontal: 10,
-  },
-  notifisty: {
-    borderRadius: 10,
-    backgroundColor: "#FFF",
-    fontSize: 8,
-    textAlign: "center",
-    width: 15,
-    padding: 2,
-    marginTop: -30,
-    marginLeft: 10,
-    margin: 5,
-  },
-  linerSty: {
-    height: 200,
+    backgroundColor: "#141519",
   },
   imgSty: {
     width: 70,
@@ -36,8 +18,7 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     borderRadius: 75 / 2,
-    borderColor: "#FFF",
-    borderWidth: 3,
+    borderWidth: 2,
     marginLeft: screenWidth * -2.5,
     marginTop: screenHeight * 4,
     overflow: "hidden",
@@ -46,20 +27,7 @@ const styles = StyleSheet.create({
     color: "gray",
     fontFamily: "Poppins-Medium",
   },
-  balSty: {
-    color: "#F04E99",
-    fontFamily: "Poppins-Bold",
-    fontSize: 17,
-  },
-  balance: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "lightgray",
-    paddingBottom: 10,
-    padding: 10,
-  },
+
   transfer: {
     padding: 10,
     backgroundColor: "white",
@@ -70,23 +38,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 5,
   },
-  paytypesty: {
-    textAlign: "center",
-    paddingTop: 10,
-    fontSize: 10,
-    color: "#000",
-    fontFamily: "Poppins-Medium",
-  },
+
   transferbox: {
     flex: 0.2,
     backgroundColor: "white",
     marginHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     elevation: 2,
-    shadowColor: "lightgrey",
     shadowOffset: { width: -0.5, height: 0.5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
+    shadowOpacity: 1,
+    marginTop: screenHeight * 3,
   },
   shoppingCotainer: {
     flex: 1,
@@ -116,25 +77,6 @@ const styles = StyleSheet.create({
   shoptxt: {
     fontFamily: "Poppins-Regular",
     fontSize: 13,
-  },
-  notifiheader: {
-    flex: 0.2,
-    backgroundColor: "#fff",
-    margin: 10,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 5,
-    elevation: 10,
-    shadowColor: "lightgrey",
-    shadowOffset: { width: -0.5, height: 0.5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-  },
-  userimg: {
-    width: 40,
-    height: 40,
-    resizeMode: "contain",
   },
 });
 export default styles;

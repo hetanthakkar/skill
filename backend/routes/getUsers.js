@@ -2,14 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const User = mongoose.model("User");
-router.post("/login", async (req, res) => {
-  const { email } = req.body;
-  console.log("emal", email);
+router.get("/getUsers", async (req, res) => {
   try {
-    User.findOne({ email }, (error, data) => {
-      if (data) res.send(data);
-      else res.send(null);
-    });
+    const user = User.find({}, (error, data) =>
+      error ? res.send(error) : res.send(data)
+    );
   } catch (err) {
     res.status(422).send(err.message);
   }

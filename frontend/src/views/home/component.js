@@ -43,7 +43,7 @@ class Home extends React.Component {
     await this.setState({ fontsLoaded: true });
     const token = await AsyncStorage.getItem("token");
     // console.log("tokeeen is", token);
-    fetch("http://192.168.2.6:3000/getUser", {
+    fetch("http://192.168.2.4:3000/getUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,6 @@ class Home extends React.Component {
     })
       .then((result) => result.json())
       .then(async (data) => {
-        console.log("data is fuck", data);
         await this.props.saveInfo(data);
       })
       .catch((err) => console.log(err));
@@ -69,122 +68,93 @@ class Home extends React.Component {
           key={this.props.user}
           style={{
             flex: 1,
-            backgroundColor: "white",
-            flexDirection: "row",
+            backgroundColor: "#141519",
             paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
           }}
         >
           <ScrollView
             style={{
+              flex: 1,
               backgroundColor: this.props.theme == "dark" ? "#141519" : "white",
             }}
           >
-            <LinearGradient
-              colors={
-                this.props.theme == "dark"
-                  ? ["#141519", "#141519"]
-                  : ["white", "white"]
-              }
-              style={styles.linerSty}
+            <View
+              style={[
+                styles.headerContainer,
+                {
+                  backgroundColor:
+                    this.props.theme == "dark" ? "#141519" : "white",
+                },
+              ]}
             >
-              <TouchableOpacity
-                onPress={() => this.props.navigation.openDrawer()}
+              <View style={[styles.userImg]}>
+                <Image
+                  style={styles.imgSty}
+                  source={{ uri: this.props.user.profilePhoto }}
+                />
+              </View>
+              <View
                 style={{
-                  flex: 1,
-                  marginTop: screenHeight * 5,
-                  marginLeft: screenWidth * 2,
-                  //   marginRight: "6%",
+                  padding: 10,
+                  marginTop: screenHeight * 2,
+                  marginLeft: screenWidth * 5,
                 }}
               >
-                {/*Donute Button Image */}
-              </TouchableOpacity>
-
-              <View style={styles.headerContainer}>
-                <View
+                <Text
                   style={{
-                    flexDirection: "row",
+                    fontSize: 20,
+                    color: this.props.theme == "light" ? "#141519" : "#F1EEFc",
+                    fontWeight: "bold",
                   }}
                 >
-                  <View style={styles.userImg}>
-                    <Image
-                      style={styles.imgSty}
-                      source={{ uri: this.props.user.profilePhoto }}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      padding: 10,
-                      marginLeft: "4%",
-                      marginTop: screenHeight * 2,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        color:
-                          this.props.theme == "light" ? "#141519" : "#F1EEFc",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {this.props.user.name}
-                    </Text>
-                    <Text
-                      style={{
-                        color:
-                          this.props.theme == "light" ? "#141519" : "#F1EEFc",
-                        fontFamily: "Poppins-bold",
-                        marginTop: screenHeight * 1,
-                        fontSize: 18,
-                      }}
-                    >
-                      {this.props.user.email}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: "Poppins-bold",
-                        color:
-                          this.props.theme == "light" ? "#141519" : "white",
-                        marginTop: screenHeight * 1,
-                        fontSize: 16,
-                      }}
-                    >
-                      Role: {this.props.user.role}
-                    </Text>
-                  </View>
-                </View>
+                  {this.props.user.name}
+                </Text>
+                <Text
+                  style={{
+                    color: this.props.theme == "light" ? "#141519" : "#F1EEFc",
+                    fontFamily: "Poppins-bold",
+                    marginTop: screenHeight * 1,
+                    fontSize: 18,
+                    opacity: 0.85,
+                  }}
+                >
+                  {this.props.user.email}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Poppins-bold",
+                    color: this.props.theme == "light" ? "#141519" : "white",
+                    marginTop: screenHeight * 1,
+                    fontSize: 16,
+                    opacity: 0.8,
+                  }}
+                >
+                  Role: {this.props.user.role}
+                </Text>
               </View>
-            </LinearGradient>
+            </View>
             <View
               style={[
                 styles.transferbox,
                 {
                   backgroundColor:
-                    this.props.theme == "dark" ? "#141519" : "white",
-                  marginTop: -75,
-                  borderColor:
-                    this.props.theme == "light" ? "#141519" : "white",
-                  borderWidth: 1,
+                    this.props.theme == "dark" ? "#1E1E1E" : "white",
+                  shadowColor:
+                    this.props.theme == "dark" ? "lightgrey" : "black",
                 },
               ]}
             >
               <View
                 style={{
-                  flex: 1,
                   flexDirection: "row",
                   flexWrap: "wrap",
-                  padding: 8,
+                  paddingVertical: 5,
+                  paddingHorizontal: 5,
                 }}
               >
-                <View
-                  style={{
-                    flex: 0.25,
-                    margin: 10,
-                    marginLeft: 20,
-                  }}
-                >
+                <View style={{ flex: 0.25, margin: 10 }}>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Linear1")}
+                    onPress={() => this.props.navigation.navigate("Map")}
                   >
                     <LinearGradient
                       colors={["#09C6F9", "#045DE9"]}
@@ -195,35 +165,32 @@ class Home extends React.Component {
                     >
                       <View style={{ padding: 5, alignItems: "center" }}>
                         <View style={styles.transfer}>
-                          <Icon
-                            family="MaterialCommunityIcons"
-                            name="teach"
-                            size={20}
-                          />
+                          <Icon family="FontAwesome" name="group" size={20} />
                         </View>
                       </View>
                     </LinearGradient>
                     <Text
                       style={{
+                        flexWrap: "wrap",
                         textAlign: "center",
+                        alignSelf: "center",
                         paddingTop: 10,
-                        fontSize: 14,
+                        fontSize: 12,
                         fontFamily: "Poppins-Medium",
                         color:
                           this.props.theme == "light" ? "#141519" : "white",
                       }}
                     >
-                      Teach
+                      Discuss
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{ flex: 0.25, margin: 10, marginLeft: 20 }}>
+                <View style={{ flex: 0.25, margin: 10 }}>
                   <TouchableOpacity
                     onPress={() => this.props.navigation.navigate("Chat")}
                   >
                     <LinearGradient
                       colors={["#09C6F9", "#045DE9"]}
-                      // colors={["#fc0f84", "#020cab"]}
                       start={{ x: 1, y: 0 }}
                       end={{ x: 0, y: 1 }}
                       style={styles.gradsty}
@@ -231,8 +198,8 @@ class Home extends React.Component {
                       <View style={{ padding: 5, alignItems: "center" }}>
                         <View style={styles.transfer}>
                           <Icon
-                            family="FontAwesome5"
-                            name="chalkboard-teacher"
+                            family="MaterialIcons"
+                            name="meeting-room"
                             size={23}
                           />
                         </View>
@@ -248,7 +215,7 @@ class Home extends React.Component {
                           this.props.theme == "light" ? "#141519" : "white",
                       }}
                     >
-                      Learn
+                      Rooms
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -256,8 +223,7 @@ class Home extends React.Component {
                 <View style={{ flex: 0.25, margin: 10 }}>
                   <TouchableOpacity
                     onPress={async () => {
-                      await AsyncStorage.removeItem("token");
-                      this.props.navigation.navigate("Splash Screen");
+                      this.props.navigation.navigate("ChatList");
                     }}
                   >
                     <LinearGradient
@@ -269,7 +235,11 @@ class Home extends React.Component {
                     >
                       <View style={{ padding: 5, alignItems: "center" }}>
                         <View style={styles.transfer}>
-                          <Icon family="AntDesign" name="wallet" size={22} />
+                          <Icon
+                            family="MaterialIcons"
+                            name="chat-bubble-outline"
+                            size={22}
+                          />
                         </View>
                       </View>
                     </LinearGradient>
@@ -285,7 +255,7 @@ class Home extends React.Component {
                           this.props.theme == "light" ? "#141519" : "white",
                       }}
                     >
-                      Transactions
+                      Chats
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -302,7 +272,11 @@ class Home extends React.Component {
                     >
                       <View style={{ padding: 5, alignItems: "center" }}>
                         <View style={styles.transfer}>
-                          <Icon family="Feather" name="map" size={20} />
+                          <Icon
+                            family="Ionicons"
+                            name="md-map-sharp"
+                            size={20}
+                          />
                         </View>
                       </View>
                     </LinearGradient>
@@ -318,7 +292,7 @@ class Home extends React.Component {
                           this.props.theme == "light" ? "#141519" : "white",
                       }}
                     >
-                      Around Me
+                      Nearby
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -326,9 +300,8 @@ class Home extends React.Component {
             </View>
             <View
               style={{
-                flex: 1,
                 justifyContent: "center",
-                marginTop: 15,
+                marginTop: 12,
                 flexWrap: "wrap",
                 backgroundColor:
                   this.props.theme == "dark" ? "#141519" : "white",
@@ -336,12 +309,22 @@ class Home extends React.Component {
             >
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="MaterialIcons"
-                      name="code"
+                      family="Fontisto"
+                      name="react"
                       size={20}
-                      color="#045DE9"
+                      color={this.props.theme == "dark" ? "#045DE9" : "#045DE9"}
                     />
                   </View>
                   <Text
@@ -355,10 +338,20 @@ class Home extends React.Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="MaterialCommunityIcons"
-                      name="cash-multiple"
+                      family="Fontisto"
+                      name="angularjs"
                       size={20}
                       color="#045DE9"
                     />
@@ -376,10 +369,20 @@ class Home extends React.Component {
               </View>
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="MaterialIcons"
-                      name="music-note"
+                      family="Fontisto"
+                      name="vuejs"
                       size={20}
                       color={mainColor}
                     />
@@ -391,14 +394,24 @@ class Home extends React.Component {
                       color: this.props.theme == "light" ? "#141519" : "white",
                     }}
                   >
-                    Musical Instrument
+                    Music
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="MaterialIcons"
-                      name="mic"
+                      family="Fontisto"
+                      name="java"
                       size={20}
                       color={mainColor}
                     />
@@ -416,10 +429,20 @@ class Home extends React.Component {
               </View>
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="FontAwesome"
-                      name="edit"
+                      family="Fontisto"
+                      name="python"
                       size={20}
                       color={mainColor}
                     />
@@ -435,10 +458,20 @@ class Home extends React.Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="MaterialCommunityIcons"
-                      name="image"
+                      name="language-kotlin"
                       size={20}
                       color={mainColor}
                     />
@@ -456,10 +489,20 @@ class Home extends React.Component {
               </View>
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="FontAwesome"
-                      name="list-alt"
+                      name="html5"
                       size={20}
                       color={mainColor}
                     />
@@ -475,10 +518,20 @@ class Home extends React.Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="MaterialCommunityIcons"
-                      name="translate"
+                      name="language-javascript"
                       size={20}
                       color={mainColor}
                     />
@@ -496,10 +549,20 @@ class Home extends React.Component {
               </View>
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="MaterialCommunityIcons"
-                      name="draw"
+                      name="language-php"
                       size={20}
                       color={mainColor}
                     />
@@ -515,10 +578,20 @@ class Home extends React.Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="MaterialCommunityIcons"
-                      name="chef-hat"
+                      family="Fontisto"
+                      name="nodejs"
                       size={20}
                       color={mainColor}
                     />
@@ -536,10 +609,20 @@ class Home extends React.Component {
               </View>
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
-                      family="FontAwesome"
-                      name="edit"
+                      family="Fontisto"
+                      name="unity"
                       size={20}
                       color={mainColor}
                     />
@@ -555,10 +638,20 @@ class Home extends React.Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="MaterialCommunityIcons"
-                      name="image"
+                      name="robot"
                       size={20}
                       color={mainColor}
                     />
@@ -570,17 +663,27 @@ class Home extends React.Component {
                       color: this.props.theme == "light" ? "#141519" : "white",
                     }}
                   >
-                    Photography
+                    ML/AI
                   </Text>
                 </TouchableOpacity>
               </View>
 
               <View style={styles.shoppingCotainer}>
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="MaterialCommunityIcons"
-                      name="currency-inr"
+                      name="language-swift"
                       size={20}
                       color={mainColor}
                     />
@@ -597,7 +700,17 @@ class Home extends React.Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.shoppingbody}>
-                  <View style={styles.shoppingtxt1}>
+                  <View
+                    style={[
+                      styles.shoppingtxt1,
+                      {
+                        // backgroundColor:
+                        //   this.props.theme == "light" ? "#141519" : "white",
+                        borderRadius: 20,
+                        borderWidth: 0.5,
+                      },
+                    ]}
+                  >
                     <Icon
                       family="MaterialCommunityIcons"
                       name="dots-horizontal"

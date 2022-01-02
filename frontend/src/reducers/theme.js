@@ -1,8 +1,9 @@
 const DEFAULT_STATE = {
-  theme: "dark",
+  theme: "light",
 };
 const themeReducer = (state = DEFAULT_STATE, action) => {
   const { type, payload } = action;
+  console.log("ayaaaa");
   switch (type) {
     case "CHANGE_THEME":
       if (state.theme == "light") {

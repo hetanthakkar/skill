@@ -49,7 +49,12 @@ const myFields = ({
   const iconColor = () => {
     if (error != null && touched == true) return "red";
     if (error == undefined && visited) return "green";
-    else return "white";
+    else {
+      if (theme == "light") return "black";
+      else {
+        return "white";
+      }
+    }
   };
   return (
     <TextInput
@@ -79,7 +84,7 @@ let Form = (props) => {
         "943496437066-sdrk3mek3l962grlk6i2d9jks7bkhl5h.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     }).then((result) => {
-      fetch("http://192.168.2.6:3000/signup", {
+      fetch("http://192.168.2.4:3000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +166,7 @@ let Form = (props) => {
       scrollEnabled={scrollHeight > screenHeight * 100}
       style={
         props.theme.theme == "dark"
-          ? { ...styles.mainView, backgroundColor: "#141519" }
+          ? { ...styles.mainView, backgroundColor: "#121212" }
           : styles.mainView
       }
     >
@@ -182,7 +187,7 @@ let Form = (props) => {
         <Text
           style={
             props.theme.theme == "dark"
-              ? { ...styles.already, color: "white" }
+              ? { ...styles.already, color: "white", opacity: 0.6 }
               : styles.already
           }
         >
@@ -231,7 +236,7 @@ let Form = (props) => {
       <TouchableOpacity
         onPress={signInWithGoogleAsync}
         style={{
-          width: screenWidth * 85,
+          width: screenWidth * 88,
           alignSelf: "center",
           // borderRadius: 4,
           marginTop: screenHeight * 3,

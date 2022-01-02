@@ -10,10 +10,13 @@ const authRoute = require("./routes/auth");
 const modifyUserRoute = require("./routes/modifyUser");
 const userRoute = require("./routes/getUser");
 const loginRoute = require("./routes/login");
+const getUsersRoute = require("./routes/getUsers");
+
 app.use(authRoute);
 app.use(userRoute);
 app.use(modifyUserRoute);
 app.use(loginRoute);
+app.use(getUsersRoute);
 
 app.listen(port, () => {
   console.log("server running");

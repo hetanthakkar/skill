@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logoView: {
-    marginTop: screenHeight * 2,
+    marginTop: screenHeight * 5,
     alignSelf: "center",
     flexDirection: "row",
   },

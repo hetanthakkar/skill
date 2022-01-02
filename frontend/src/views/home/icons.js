@@ -13,7 +13,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import Fontisto from "react-native-vector-icons/Fontisto";
 import { Platform } from "react-native";
 import PropTypes from "prop-types";
 
@@ -62,6 +62,9 @@ export default class Icon extends Component {
         break;
       case "AntDesign":
         this.Icon = AntDesign;
+        break;
+      case "Fontisto":
+        this.Icon = Fontisto;
         break;
       default:
         this.Icon = Ionicons;

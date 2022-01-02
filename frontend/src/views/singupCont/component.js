@@ -80,7 +80,7 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem("token");
-    fetch("http://192.168.2.6:3000/getUser", {
+    fetch("http://192.168.2.4:3000/getUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ class App extends React.Component {
     return (
       <ScrollView
         style={
-          this.state.theme == "dark"
+          this.props.theme == "dark"
             ? { ...styles.mainView, backgroundColor: "#141519" }
             : styles.mainView
         }
@@ -106,7 +106,7 @@ class App extends React.Component {
         <View>
           <Text
             style={
-              this.state.theme == "dark"
+              this.props.theme == "dark"
                 ? { ...styles.title, color: "#DFE5EF" }
                 : styles.title
             }
@@ -115,7 +115,7 @@ class App extends React.Component {
           </Text>
           <Text
             style={
-              this.state.theme == "dark"
+              this.props.theme == "dark"
                 ? { ...styles.subtitle, color: "#DFE5EF" }
                 : styles.subtitle
             }
@@ -213,7 +213,7 @@ class App extends React.Component {
           />
         )}
         <TouchableOpacity style={styles.submit} onPress={this.submit}>
-          <Text style={styles.submitText}>Continue Ahed {" >"} </Text>
+          <Text style={styles.submitText}>Continue Ahed </Text>
         </TouchableOpacity>
       </ScrollView>
     );

@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   logoView: {
-    marginTop: screenHeight * 5,
     alignSelf: "center",
     flexDirection: "row",
   },

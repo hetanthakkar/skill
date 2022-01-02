@@ -97,11 +97,10 @@ const styles = StyleSheet.create({
   submit: {
     position: "absolute",
     alignSelf: "center",
-    borderRadius: 10,
+    borderRadius: 20,
     width: screenWidth * 85,
-    borderStyle: "solid",
     backgroundColor: "#045DE9",
-    marginTop: screenHeight * 78,
+    marginTop: screenHeight * 75,
   },
   submitText: {
     color: "white",
