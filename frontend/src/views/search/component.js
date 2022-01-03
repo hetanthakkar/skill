@@ -80,13 +80,13 @@ class Map extends Component {
             borderRadius: 15,
           }}
         >
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <View style={{ flexDirection: "row-reverse", alignSelf: "center" }}>
             <Text
               style={{
                 color: "white",
                 fontWeight: "bold",
                 fontSize: 15,
-                marginRight: 6,
+                marginLeft: 6,
               }}
             >
               Sort
@@ -102,13 +102,13 @@ class Map extends Component {
             borderRadius: 15,
           }}
         >
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <View style={{ flexDirection: "row-reverse", alignSelf: "center" }}>
             <Text
               style={{
                 color: "white",
                 fontWeight: "bold",
                 fontSize: 15,
-                marginRight: 6,
+                marginLeft: 6,
               }}
             >
               Filter
@@ -124,13 +124,13 @@ class Map extends Component {
             borderRadius: 15,
           }}
         >
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <View style={{ flexDirection: "row-reverse", alignSelf: "center" }}>
             <Text
               style={{
                 color: "white",
                 fontWeight: "bold",
                 fontSize: 15,
-                marginRight: 6,
+                marginLeft: 6,
               }}
             >
               Reset

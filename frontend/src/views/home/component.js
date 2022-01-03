@@ -61,6 +61,11 @@ class Home extends React.Component {
   handleBackButton = () => {
     this.props.navigation.navigate("Signup");
   };
+  changeTheme = (value) => {
+    console.log("value");
+    if (this.props.theme == "light") this.props.setTheme("dark");
+    else this.props.setTheme("light");
+  };
   render() {
     if (this.state.fontsLoaded) {
       return (
@@ -100,15 +105,33 @@ class Home extends React.Component {
                   marginLeft: screenWidth * 5,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: this.props.theme == "light" ? "#141519" : "#F1EEFc",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {this.props.user.name}
-                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color:
+                        this.props.theme == "light" ? "#141519" : "#F1EEFc",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {this.props.user.name}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={this.changeTheme}
+                    style={{ marginLeft: screenWidth * 20 }}
+                  >
+                    <Icon
+                      size={30}
+                      style={{}}
+                      color={this.props.theme == "light" ? "black" : "white"}
+                      name={
+                        this.props.theme == "light"
+                          ? "sunny-outline"
+                          : "moon-outline"
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
                 <Text
                   style={{
                     color: this.props.theme == "light" ? "#141519" : "#F1EEFc",

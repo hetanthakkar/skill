@@ -13,7 +13,6 @@ import {
   useFonts,
   PermanentMarker_400Regular,
 } from "@expo-google-fonts/permanent-marker";
-import Switch from "expo-dark-mode-switch";
 import { changeTheme, addInfo } from "../../actions";
 import Icon from "react-native-vector-icons/Ionicons";
 import { screenHeight, screenWidth } from "../../helpers";
